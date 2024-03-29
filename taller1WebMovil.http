@@ -1,0 +1,6 @@
+@taller1WebMovil_HostAddress = http://localhost:5289
+
+GET {{taller1WebMovil_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
