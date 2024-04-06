@@ -5,14 +5,14 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
     public interface IUserRepository
     {
          
-        Task<IEnumerable<User>> GetUsers();
+        Task<IEnumerable<User>> GetUsers(); //Se obtienen todos los usuarios
 
-        Task<User?> GetUserByEmail(string Email);
+        Task<User?> GetUserByEmail(string Email); //Se obtiene el usuario mediante su Email
 
-        Task<bool> VerifyUserByEMail(string Email);
+        Task<bool> VerifyUserByEMail(string Email); //Se verifica si un usuario existe mediante su Email
 
-        Task AddUser(User user);
+        Task AddUser(User user); //Se agrega un usuario
 
-        Task<bool> VerifyUserByRut(string Rut);
+        Task<bool> VerifyUserByRut(string Rut); //Se verifica si un usuario existe mediante su Rut
     }
 }

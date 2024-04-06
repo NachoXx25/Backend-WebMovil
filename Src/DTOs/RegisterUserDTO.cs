@@ -6,38 +6,38 @@ namespace taller1WebMovil.Src.DTOs
     public class RegisterUserDTO
     {
         [Rut] // el rut es unico?
-        [Required (ErrorMessage = "El RUT es requerido")]
+        [Required (ErrorMessage = "El RUT es requerido")] //rut requerido
         public required string Rut { get; set; }
 
-        [Required (ErrorMessage = "El nombre es requerido")]
-        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "El nombre solo puede contener letras")]
-        [MinLength (8, ErrorMessage = "El nombre debe tener al menos 8 caracteres")]
-        [MaxLength (255, ErrorMessage = "El nombre debe tener como máximo 255 caracteres")]
+        [Required (ErrorMessage = "El nombre es requerido")] //nombre requerido
+        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "El nombre solo puede contener letras")] //nombre solo letras
+        [MinLength (8, ErrorMessage = "El nombre debe tener al menos 8 caracteres")] //nombre minimo de 8 caracteres
+        [MaxLength (255, ErrorMessage = "El nombre debe tener como máximo 255 caracteres")] //nombre maximo de 255 caracteres
         public string Name { get; set; } = string.Empty;
 
 
-        [DataType(DataType.Date)]
-        [BirthDate]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)] //fecha de nacimiento
+        [BirthDate] //validacion de fecha de nacimiento, previene que no sea nula y que sea una fecha valida antes que hoy
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)] //formato de fecha
         public DateTime BirthDate { get; set; }
 
 
-        [Required (ErrorMessage = "El email es requerido")]
-        [EmailAddress (ErrorMessage = "El email no es válido")]
+        [Required (ErrorMessage = "El email es requerido")] //email requerido
+        [EmailAddress (ErrorMessage = "El email no es válido")] //email valido
         public string Email { get; set; } = string.Empty;
 
-        [Gender]
+        [Gender] //validacion de genero, previene que no sea nulo y que sea un genero valido (los especificados en el taller)
         public string Gender { get; set; } = string.Empty;
 
-        [Required (ErrorMessage = "La contraseña es requerida")]
-        [RegularExpression(@"^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]+$", ErrorMessage = "La Contraseña debe ser alfanumérica.")]
-        [MinLength (8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
-        [MaxLength (20, ErrorMessage = "La contraseña debe tener como máximo 20 caracteres")]
+        [Required (ErrorMessage = "La contraseña es requerida")] //contraseña requerida
+        [RegularExpression(@"^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]+$", ErrorMessage = "La Contraseña debe ser alfanumérica.")] //contraseña alfanumerica
+        [MinLength (8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")] //contraseña minimo de 8 caracteres
+        [MaxLength (20, ErrorMessage = "La contraseña debe tener como máximo 20 caracteres")] //contraseña maximo de 20 caracteres
         public string Password { get; set; } = string.Empty;
 
 
-        [Required (ErrorMessage = "La confirmación de la contraseña es requerida")]
-        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
+        [Required (ErrorMessage = "La confirmación de la contraseña es requerida")] //confirmacion de contraseña requerida
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")] //comparacion de contraseñas
         public string ConfirmPassword { get; set; } = string.Empty;
         
     }

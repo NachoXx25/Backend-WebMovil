@@ -10,7 +10,7 @@ namespace taller1WebMovil.Src.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _service;
+        private readonly IUserRepository _service; //inyeccion de dependencias
 
         public UserController(IUserRepository service)
         {
@@ -18,10 +18,10 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<User>> GetAllUsers()
+        public ActionResult<IEnumerable<User>> GetAllUsers() //metodo para obtener todos los usuarios
         {
-            var result = _service.GetUsers().Result;
-            return Ok(result);
+            var result = _service.GetUsers().Result; //se obtienen todos los usuarios
+            return Ok(result); //se retornan los usuarios
         }
     }
 }

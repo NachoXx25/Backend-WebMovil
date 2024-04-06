@@ -17,14 +17,14 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LoginUser(LoginUserDTO loqinUserDTO)
+        public async Task<ActionResult<string>> LoginUser(LoginUserDTO loqinUserDTO) //metodo para loguear un usuario
         {
-            var result = await _authService.LoginUser(loqinUserDTO);
+            var result = await _authService.LoginUser(loqinUserDTO); //se llama al metodo de login
             
             if (result != null){
-                return Ok(result);
+                return Ok(result); //se retorna el token
             }
-            return BadRequest("Credenciales inválidas.");
+            return BadRequest("Credenciales inválidas."); //si no se logra loguear, se retorna un mensaje de credenciales inválidas
         }
     }
 }

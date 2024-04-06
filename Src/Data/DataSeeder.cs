@@ -7,11 +7,11 @@ namespace taller1WebMovil.Src.Data
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var scope = serviceProvider.CreateScope()){
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<DataContext>();
+            using (var scope = serviceProvider.CreateScope()){ // se crea un scope
+                var services = scope.ServiceProvider; // se obtienen los servicios
+                var context = services.GetRequiredService<DataContext>(); // se obtiene el contexto de la base de datos
 
-                if(!context.Roles.Any()){
+                if(!context.Roles.Any()){ // si no hay roles en la base de datos se crean los roles
                     context.Roles.AddRange(
                         new Role { Name = "Admin"},
                         new Role { Name = "User"}
@@ -76,7 +76,7 @@ namespace taller1WebMovil.Src.Data
                     };
                     context.Products.Add(product);
                 }
-                context.SaveChanges();
+                context.SaveChanges(); // se guardan los cambios en la base de datos (importante)
             }
         }
     }

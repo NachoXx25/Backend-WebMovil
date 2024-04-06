@@ -7,12 +7,16 @@ namespace taller1WebMovil.Src.Validations
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            var birthDate = (DateTime)value;
-            if (birthDate > DateTime.Now)
+            if (value != null)
             {
-                return new ValidationResult("La fecha de cumpleaños no puede ser mayor a la fecha actual.");
+                var birthDate = (DateTime)value;
+                if (birthDate > DateTime.Now)
+                {
+                    return new ValidationResult("La fecha de cumpleaños no puede ser mayor a la fecha actual.");
+                }
+                return ValidationResult.Success;
             }
-            return ValidationResult.Success;
+            return new ValidationResult("La fecha de cumpleaños es requerida."); 
         }
     }
 }

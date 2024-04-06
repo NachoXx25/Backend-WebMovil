@@ -8,8 +8,8 @@ namespace taller1WebMovil.Src.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<RegisterUserDTO, User>();
-            //CreateMap<ProductDTO, Product>();
+            CreateMap<RegisterUserDTO, User>(); //Mapeo de RegisterUserDTO a User
+            //CreateMap<ProductDTO, Product>(); //Mapeo de ProductDTO a Product
         }
     }
 }

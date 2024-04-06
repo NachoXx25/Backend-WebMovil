@@ -7,17 +7,16 @@ namespace taller1WebMovil.Src.Services.Implements
 {
     public class MapperService : IMapperService
     {
-        private readonly IMapper _mapper;
-
-        public MapperService(IMapper mapper)
+        private readonly IMapper _mapper; 
+        public MapperService(IMapper mapper) //inyeccion de dependencias
         {
             _mapper = mapper;
         }
         
-        public User RegisterUserDTOToUser(RegisterUserDTO registerUserDTO)
+        public User RegisterUserDTOToUser(RegisterUserDTO registerUserDTO) //mapeo de RegisterUserDTO a User
         {
-            var mappedUser = _mapper.Map<User>(registerUserDTO);
-            return mappedUser;
+            var mappedUser = _mapper.Map<User>(registerUserDTO);  
+            return mappedUser; //retorna el objeto mapeado
         }
 
     }
