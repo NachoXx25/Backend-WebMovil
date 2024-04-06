@@ -7,7 +7,7 @@ namespace taller1WebMovil.Src.Repositories.Implements
 {
     public class UserRepository : IUserRepository
     {
-         private readonly DataContext _context;
+        private readonly DataContext _context;
 
         public UserRepository(DataContext context)
         {
@@ -44,5 +44,16 @@ namespace taller1WebMovil.Src.Repositories.Implements
             return true;
             
         }
+
+        public async Task<bool> VerifyUserByRut(string Rut)
+        {
+            var user = await _context.Users.Where(u => u.Rut == Rut)
+                                            .FirstOrDefaultAsync();
+            if(user == null){
+                return false;
+            }
+            return true;
+        }
+
     }
 }

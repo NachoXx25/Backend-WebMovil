@@ -16,7 +16,6 @@ namespace taller1WebMovil.Src.DTOs
         public string Name { get; set; } = string.Empty;
 
 
-        [Required (ErrorMessage = "La fecha de nacimiento es requerida")]
         [DataType(DataType.Date)]
         [BirthDate]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -27,7 +26,7 @@ namespace taller1WebMovil.Src.DTOs
         [EmailAddress (ErrorMessage = "El email no es válido")]
         public string Email { get; set; } = string.Empty;
 
-        [Required (ErrorMessage = "El género es requerido")]
+        [Gender]
         public string Gender { get; set; } = string.Empty;
 
         [Required (ErrorMessage = "La contraseña es requerida")]

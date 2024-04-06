@@ -27,8 +27,9 @@ namespace taller1WebMovil.Src.Data
                         Email = "ignacio.mancilla@gmail.com",
                         Gender = "Masculino",
                         Password = BCrypt.Net.BCrypt.HashPassword("P4ssw0rd"),
-                        RoleId = 1
-                        // faltaria añadir el campo de estado si este aplica en base de datos (estado siempre 1 para admin)
+                        RoleId = 1,
+                        //Active = true
+                        // faltaria añadir el campo de estado si este aplica en base de datos (estado siempre true para admin) falta dropear y refrescar la base de datos
                     };
                     context.Users.Add(user);
                     /*

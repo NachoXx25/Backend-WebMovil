@@ -12,5 +12,7 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
         Task<bool> VerifyUserByEMail(string Email);
 
         Task AddUser(User user);
+
+        Task<bool> VerifyUserByRut(string Rut);
     }
 }
