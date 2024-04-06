@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "LvQT3D7FKWcADK/MKHn6SfX0Cik+aQX7KENV4Q4ckJo4K0lCjIsH8P0vtPRua+5MkBkBKMGl7l/l1J53JxFOUA==",
+  "dgSpecHash": "ojTCG20NPi05PMhMPT835ng2LT14+WYmRcIPjnjSpOtnZjJZZG8zruP+BXZNPBFDfV2jrC9Rou72mXdCLihg3g==",
   "success": true,
   "projectFilePath": "C:\\Users\\TheNachoXx\\Desktop\\taller1WebMovil\\taller1WebMovil.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\TheNachoXx\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\TheNachoXx\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\TheNachoXx\\.nuget\\packages\\bogus\\35.5.0\\bogus.35.5.0.nupkg.sha512",
     "C:\\Users\\TheNachoXx\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
