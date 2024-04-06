@@ -4,10 +4,13 @@ using Microsoft.IdentityModel.Tokens;
 using taller1WebMovil.Src.Data;
 using taller1WebMovil.Src.Repositories.Implements;
 using taller1WebMovil.Src.Repositories.Interfaces;
+using taller1WebMovil.Src.Services.Implements;
+using taller1WebMovil.Src.Services.Interfaces;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -16,9 +19,10 @@ builder.Services.AddDbContext<DataContext>(option => option.UseSqlite("Data Sour
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMapperService, MapperService>();
 
-
-
+/*
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters()
@@ -30,7 +34,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
             builder.Configuration.GetSection("AppSettings:Token").Value!))
     };
 });
-
+*/
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -48,9 +52,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
 

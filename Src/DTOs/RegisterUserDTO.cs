@@ -5,25 +5,31 @@ namespace taller1WebMovil.Src.DTOs
 {
     public class RegisterUserDTO
     {
-        [Rut (ErrorMessage = "El RUT no es válido")]
+        [Rut] // el rut es unico?
         [Required (ErrorMessage = "El RUT es requerido")]
         public required string Rut { get; set; }
 
         [Required (ErrorMessage = "El nombre es requerido")]
+        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "El nombre solo puede contener letras")]
         [MinLength (8, ErrorMessage = "El nombre debe tener al menos 8 caracteres")]
         [MaxLength (255, ErrorMessage = "El nombre debe tener como máximo 255 caracteres")]
-
         public string Name { get; set; } = string.Empty;
-        [Required (ErrorMessage = "La fecha de nacimiento es requerida")]
 
+
+        [Required (ErrorMessage = "La fecha de nacimiento es requerida")]
+        [DataType(DataType.Date)]
+        [BirthDate]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
+
+
         [Required (ErrorMessage = "El email es requerido")]
         [EmailAddress (ErrorMessage = "El email no es válido")]
-
         public string Email { get; set; } = string.Empty;
-        [Required (ErrorMessage = "El género es requerido")]
 
+        [Required (ErrorMessage = "El género es requerido")]
         public string Gender { get; set; } = string.Empty;
+
         [Required (ErrorMessage = "La contraseña es requerida")]
         [RegularExpression(@"^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]+$", ErrorMessage = "La Contraseña debe ser alfanumérica.")]
         [MinLength (8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
