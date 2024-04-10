@@ -17,7 +17,7 @@ namespace taller1WebMovil.Src.Models
 
         public string Gender { get; set; } = string.Empty; //Required   
 
-        //public bool Active { get; set; } = true;
+        public bool Active { get; set; } // Required
 
         //Relationships
         public int RoleId { get; set; } //Foreign Key
