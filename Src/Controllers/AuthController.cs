@@ -26,5 +26,20 @@ namespace taller1WebMovil.Src.Controllers
             }
             return BadRequest("Credenciales inválidas."); //si no se logra loguear, se retorna un mensaje de credenciales inválidas
         }
+
+        [HttpPost("register")]
+
+        public async Task<ActionResult<string>> RegisterUser(RegisterUserDTO registerUserDTO) //metodo para registrar un usuario
+        {
+            try
+            {
+                var result = await _authService.RegisterUser(registerUserDTO); //se llama al metodo de registro
+                return Ok(result); //se retorna el token
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message); //si no se logra registrar, se retorna un mensaje de error, los de errores de servidor
+            }
+        }
     }
 }

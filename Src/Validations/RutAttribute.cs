@@ -1,22 +1,26 @@
 using System.ComponentModel.DataAnnotations;
+using taller1WebMovil.Src.Repositories.Interfaces;
 
 namespace taller1WebMovil.Src.Validations;
-
+    
     public class RutAttribute : ValidationAttribute
     {
+        
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext) //Validación de Rut
     {
+       
         if (value == null || string.IsNullOrEmpty(value.ToString()))
         {
-            return new ValidationResult("Rut is required"); //Rut requerido
+            return new ValidationResult("Rut es requerido"); //Rut requerido
         }
-
+        
         string? rut = value.ToString();
 
         if (!IsValidRut(rut))
         {
-            return new ValidationResult("Invalid Rut"); //Rut inválido
+            return new ValidationResult("Rut invalido"); //Rut inválido
         }
+
 
         return ValidationResult.Success;
     }

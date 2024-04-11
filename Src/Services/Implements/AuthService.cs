@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
+using taller1WebMovil.Src.Repositories.Implements;
 using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Interfaces;
 
@@ -17,10 +18,16 @@ namespace taller1WebMovil.Src.Services.Implements
         private readonly IUserRepository _userRepository; //Se inyecta el repositorio de usuarios
         private readonly IConfiguration _configuration; //Se inyecta la configuración
 
-        public AuthService(IUserRepository userRepository, IConfiguration configuration)
+        private readonly IMapperService _mapperService; //Se inyecta el servicio de mapeo
+
+        private readonly IRoleRepository _roleRepository; //Se inyecta el repositorio de roles
+
+        public AuthService(IUserRepository userRepository, IConfiguration configuration, IMapperService mapperService, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _mapperService = mapperService;
+            _roleRepository = roleRepository;
         }
         
         public async Task<string> LoginUser(LoginUserDTO loginUserDTO) //Método para loguear un usuario
@@ -44,9 +51,36 @@ namespace taller1WebMovil.Src.Services.Implements
             return CreateToken(user); //Si el usuario existe y la contraseña coincide, se crea un token y se retorna
         }
 
-        public Task<string> RegisterUser(RegisterUserDTO registerUserDTO) //Método para registrar un usuario
+        public async Task<string> RegisterUser(RegisterUserDTO registerUserDTO) //Método para registrar un usuario
         {
-            throw new NotImplementedException(); //pendiente
+            var mappedUser = _mapperService.RegisterUserDTOToUser(registerUserDTO); //Se mapea el DTO a un objeto de tipo User
+
+            if (_userRepository.VerifyUserByEMail(mappedUser.Email).Result) //Se verifica si el usuario ya existe
+            {
+                throw new Exception("El email ya se encuentra registrado.");
+            }
+            if (_userRepository.VerifyUserByRut(mappedUser.Rut).Result) //Se verifica si el usuario ya existe
+            {
+                throw new Exception("El rut ya se encuentra registrado.");
+            }
+            var salt = BCrypt.Net.BCrypt.GenerateSalt(12); //Se genera una sal para hashear la contraseña
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerUserDTO.Password, salt); //Se hashea la contraseña
+
+            mappedUser.Password = passwordHash; //Se asigna la contraseña hasheada al usuario
+            var role = await _roleRepository.GetRoleByName("User"); //Se obtiene el rol de usuario
+            if (role == null)
+            {
+                throw new Exception("Error en el servidor, pruebe mas tarde.");
+            }
+            mappedUser.RoleId = role.Id; //Se asigna el rol al usuario
+            mappedUser.Active = true; //Se activa el usuario
+            await _userRepository.AddUser(mappedUser); //Se agrega el usuario a la base de datos
+            var user = await _userRepository.GetUserByEmail(mappedUser.Email); //Se obtiene el usuario recien agregado
+            if (user == null)
+            {
+                throw new Exception("Error en el servidor, pruebe mas tarde.");
+            }
+            return CreateToken(user); //Se crea un token y se retorna, para un inicio de sesion  automatico
         }
 
         private string CreateToken (User user){ //Método para crear un token
@@ -55,7 +89,7 @@ namespace taller1WebMovil.Src.Services.Implements
             {
                 new ("Id", user.Id.ToString()), //Se agrega el id del usuario
                 new ("Email", user.Email), //Se agrega el email del usuario
-                new (ClaimTypes.Role, user.Role.Name) //Se agrega el rol del usuario, importante para la autorización
+                new (ClaimTypes.Role, user.Role.Name) //Se agrega el rol del usuario, importante para la autorización por roles
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!)); //Se obtiene la clave secreta del token

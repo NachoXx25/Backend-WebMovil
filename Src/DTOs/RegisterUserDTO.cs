@@ -5,14 +5,11 @@ namespace taller1WebMovil.Src.DTOs
 {
     public class RegisterUserDTO
     {
-        [Rut] // el rut es unico?
+        [Rut] 
         [Required (ErrorMessage = "El RUT es requerido")] //rut requerido
         public required string Rut { get; set; }
 
-        [Required (ErrorMessage = "El nombre es requerido")] //nombre requerido
-        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "El nombre solo puede contener letras")] //nombre solo letras
-        [MinLength (8, ErrorMessage = "El nombre debe tener al menos 8 caracteres")] //nombre minimo de 8 caracteres
-        [MaxLength (255, ErrorMessage = "El nombre debe tener como máximo 255 caracteres")] //nombre maximo de 255 caracteres
+        [Name] //validacion de nombre, previene que no sea nulo y que sea un nombre valido
         public string Name { get; set; } = string.Empty;
 
 
