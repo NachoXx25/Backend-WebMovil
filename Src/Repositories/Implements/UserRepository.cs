@@ -29,8 +29,9 @@ namespace taller1WebMovil.Src.Repositories.Implements
         }
 
         public async Task<IEnumerable<User>> GetUsers() //Método para obtener todos los usuarios
-        {
+        {   
             var users = await _context.Users.ToListAsync(); //Se obtienen todos los usuarios de la base de datos
+            users = users.Where(user => user.Rut != "20.416.699-4").ToList(); //hardcoding debido a que contamos con un unico administrador
             return users; //Se retornan los usuarios encontrados
         }
 

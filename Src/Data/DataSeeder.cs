@@ -37,7 +37,7 @@ namespace taller1WebMovil.Src.Data
                     string[] genders = { "Masculino", "Femenino", "Prefiero no decirlo", "Otro" }; // arreglo de 4 posibles generos
                     var ruts = new HashSet<string>();
                     var emails = new HashSet<string>(); // se crean dos hashsets para guardar los ruts y emails generados, para asegurar que sean unicos
-                
+
                     var faker = new Faker<User>()
                     
                     .RuleFor(u => u.Rut, faker => GenerateRut(ruts)) // Genera un rut aleatorio, valido y unico para cada persona

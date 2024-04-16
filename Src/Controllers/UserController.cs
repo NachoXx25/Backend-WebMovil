@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using taller1WebMovil.Src.Models;
+using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Repositories.Interfaces;
+using taller1WebMovil.Src.Services.Interfaces;
 
 namespace taller1WebMovil.Src.Controllers
 {
@@ -11,17 +12,23 @@ namespace taller1WebMovil.Src.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _service; //inyeccion de dependencias
-
-        public UserController(IUserRepository service)
+    
+        private readonly IMapperService _mapper; //inyeccion de dependencias
+        public UserController(IUserRepository service, IMapperService mapper) //inyeccion de dependencias
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        //TO DO: Este get debe ser usado por el DTO, no entregar contraseñas asi como esta
-        public ActionResult<IEnumerable<User>> GetAllUsers() //metodo para obtener todos los usuarios
+        public ActionResult<IEnumerable<UserDTO>> GetAllUsers() //metodo para obtener todos los usuarios
         {
-            var result = _service.GetUsers().Result; //se obtienen todos los usuarios
+            var users = _service.GetUsers().Result; //se obtienen todos los usuarios
+            var result = users.Select(user => _mapper.UserToUserDTO(user)).ToList(); //se mapean los usuarios
+            if (result.Count == 0) //si no hay usuarios
+            {
+                return NotFound("No se encontraron usuarios registrados"); //se retorna not found
+            }
             return Ok(result); //se retornan los usuarios
         }
     }

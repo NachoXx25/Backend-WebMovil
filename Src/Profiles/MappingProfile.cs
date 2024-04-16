@@ -9,6 +9,7 @@ namespace taller1WebMovil.Src.Profiles
         public MappingProfile()
         {
             CreateMap<RegisterUserDTO, User>(); //Mapeo de RegisterUserDTO a User
+            CreateMap<User, UserDTO>(); //Mapeo de User a UserDTO
             //CreateMap<ProductDTO, Product>(); //Mapeo de ProductDTO a Product
         }
     }

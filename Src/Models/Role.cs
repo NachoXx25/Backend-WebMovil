@@ -4,6 +4,6 @@ namespace taller1WebMovil.Src.Models
     {
         public int Id { get; set; } //Primary Key
 
-        public string Name { get; set; } = string.Empty; //Required   
+        public string Name { get; set; } = string.Empty;    
     }
 }
