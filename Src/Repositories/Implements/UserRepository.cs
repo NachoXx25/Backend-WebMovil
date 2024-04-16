@@ -9,9 +9,12 @@ namespace taller1WebMovil.Src.Repositories.Implements
     {
         private readonly DataContext _context; //Inyección de dependencia
 
-        public UserRepository(DataContext context)
+        private readonly IRoleRepository _roleRepository;
+
+        public UserRepository(DataContext context, IRoleRepository roleRepository) //Inyección de dependencia
         {
             _context = context;
+            _roleRepository = roleRepository;
         }
 
         public async Task AddUser(User user) //Método para agregar un usuario
@@ -28,11 +31,24 @@ namespace taller1WebMovil.Src.Repositories.Implements
             return user; //Se retorna el usuario encontrado
         }
 
+        public Task<User?> GetUserByRut(string Rut)
+        {
+            var user = _context.Users.Where(u => u.Rut == Rut)
+                                            .Include(u => u.Role)
+                                            .FirstOrDefaultAsync(); //Se busca el usuario en la base de datos, puede ser nulo
+
+            return user; //Se retorna el usuario encontrado
+        }
+
         public async Task<IEnumerable<User>> GetUsers() //Método para obtener todos los usuarios
         {   
             var users = await _context.Users.ToListAsync(); //Se obtienen todos los usuarios de la base de datos
-            users = users.Where(user => user.Rut != "20.416.699-4").ToList(); //hardcoding debido a que contamos con un unico administrador
             return users; //Se retornan los usuarios encontrados
+        }
+
+        public Task SaveChanges()
+        {
+            return _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
         }
 
         public async Task<bool> VerifyUserByEMail(string Email) //Método para verificar si un usuario existe por su email

@@ -40,6 +40,11 @@ namespace taller1WebMovil.Src.Services.Implements
             {
                 return message; //Si el usuario no existe, se retorna el mensaje de credenciales inválidas
             }
+
+            if(user.Active == false)
+            {
+                return "Usuario inactivo, no puede iniciar sesión."; //Si el usuario esta inactivo, se retorna un mensaje de usuario inactivo
+            }
             
             var result = BCrypt.Net.BCrypt.Verify(loginUserDTO.Password, user.Password); //Se verifica si la contraseña coincide pero estando hasheadas
 

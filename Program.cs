@@ -21,6 +21,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMapperService, MapperService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 
 builder.Services.AddAuthentication().AddJwtBearer(options =>

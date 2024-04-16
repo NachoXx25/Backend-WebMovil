@@ -17,10 +17,9 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LoginUser(LoginUserDTO loqinUserDTO) //metodo para loguear un usuario
+        public async Task<ActionResult<string>> LoginUser(LoginUserDTO loginUserDTO) //metodo para loguear un usuario
         {
-            var result = await _authService.LoginUser(loqinUserDTO); //se llama al metodo de login
-            
+            var result = await _authService.LoginUser(loginUserDTO); //se llama al metodo de login
             if (result != null){
                 return Ok(result); //se retorna el token
             }
