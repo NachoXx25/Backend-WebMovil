@@ -12,7 +12,13 @@ namespace taller1WebMovil.Src.Services.Implements
         {
             _mapper = mapper;
         }
-        
+
+        public ProductDTO ProductToProductDTO(Product product)
+        {
+            var mappedProduct = _mapper.Map<ProductDTO>(product);
+            return mappedProduct; //retorna el objeto mapeado
+        }
+
         public User RegisterUserDTOToUser(RegisterUserDTO registerUserDTO) //mapeo de RegisterUserDTO a User
         {
             var mappedUser = _mapper.Map<User>(registerUserDTO);  

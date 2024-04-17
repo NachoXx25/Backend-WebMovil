@@ -48,14 +48,11 @@ namespace taller1WebMovil.Src.Services.Implements
             return Task.FromResult(users);
         }
 
-
         public Task<IEnumerable<User>> GetNonAdminUsers()
         {
             var users = _repository.GetUsers().Result;
             var nonAdminUsers = users.Where(user => user.RoleId == 2).ToList();
             return Task.FromResult<IEnumerable<User>>(nonAdminUsers);
         }
-
-        
     }
 }
