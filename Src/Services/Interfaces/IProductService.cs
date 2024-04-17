@@ -1,3 +1,4 @@
+using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 
 namespace taller1WebMovil.Src.Services.Interfaces
@@ -6,7 +7,7 @@ namespace taller1WebMovil.Src.Services.Interfaces
     {
         Task<IEnumerable<Product>> GetProducts(); //Se obtienen todos los productos
 
-        Task<Product> AddProduct(); //Se obtiene un producto
+        Task<string> AddProduct(ProductDTO productDTO); //Se obtiene un producto
 
         Task<Product> UpdateProduct(int id); //Se actualiza un producto
 

@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace taller1WebMovil.Src.Validations
 {
-    public class CategoryAttribute : ValidationAttribute
+    public class TypeAttribute : ValidationAttribute
     {
         
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext) //Validación de categoría
@@ -12,7 +13,7 @@ namespace taller1WebMovil.Src.Validations
             {
                 return new ValidationResult("Categoría es requerida"); //Categoría requerida
             }
-            if (!categorias.Contains(value.ToString()))
+            if (!categorias.Any(categoria => categoria.Equals(value.ToString(), StringComparison.Ordinal)))
             {
                 return new ValidationResult("Categoría no válida (categorías válidas: Tecnología, Electrohogar, Juguetería, Ropa, Muebles, Comida, Libros)"); //Categoría no válida
             }

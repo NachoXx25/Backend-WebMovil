@@ -1,3 +1,4 @@
+using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Interfaces;
@@ -8,14 +9,24 @@ namespace taller1WebMovil.Src.Services.Implements
     {
         private readonly IProductRepository _repository;
 
-        public ProductService(IProductRepository repository)
+        private readonly IMapperService _mapperService;
+
+        public ProductService(IProductRepository repository, IMapperService mapperService)
         {
             _repository = repository;
+            _mapperService = mapperService;
         }
-
-        public Task<Product> AddProduct()
+        public async Task<string> AddProduct(ProductDTO productDTO)
         {
-            throw new NotImplementedException();
+            var mappedProduct = _mapperService.ProductDTOToProduct(productDTO); 
+
+            if (await _repository.GetProductByNameAndType(mappedProduct.Name, mappedProduct.Type) != null)
+            {
+                throw new Exception("Product already exists");
+            }
+
+            await _repository.AddProduct(mappedProduct);
+            return "Producto agregado";
         }
 
         public async Task DeleteProduct(int id)

@@ -30,9 +30,18 @@ namespace taller1WebMovil.Src.Controllers
             return Ok(productDTOs);
         } 
 
-        [HttpPost]
-        public ActionResult<string> AddProduct(){
-            return Ok();
+        [HttpPost("add")]
+        public async Task<ActionResult<string>> AddProduct(ProductDTO productDTO){
+            
+            try{
+                var product = await _productService.AddProduct(productDTO);
+                if(product == null){
+                    return NotFound("No se pudo agregar el producto");
+                }
+                return Ok(product);
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut("{id}")]

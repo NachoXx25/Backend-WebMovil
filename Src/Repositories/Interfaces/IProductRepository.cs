@@ -10,6 +10,8 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
 
         Task<bool> DeleteProduct(Product product); //Se elimina un producto
 
+        Task AddProduct(Product product); //Se agrega un producto
+
         Task<Product> GetProductByNameAndType(string name, string type); //Se obtiene un producto mediante su nombre y tipo
         public Task SaveChanges();
     }

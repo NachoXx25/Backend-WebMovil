@@ -14,6 +14,13 @@ namespace taller1WebMovil.Src.Repositories.Implements
             _context = dataContext;
         }
 
+        public async Task AddProduct(Product product)
+        {
+            await _context.Products.AddAsync(product); //Se agrega el producto a la base de datos
+            await _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
+        }
+
+
         public async Task<bool> DeleteProduct(Product product)
         {
             if(product == null)
@@ -37,9 +44,14 @@ namespace taller1WebMovil.Src.Repositories.Implements
             
         }
 
-        public Task<Product> GetProductByNameAndType(string name, string type)
+        public async Task<Product> GetProductByNameAndType(string name, string type)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.Where(p => p.Name == name & p.Type == type).FirstOrDefaultAsync(); //Se obtiene el producto por su nombre y tipo
+            if(product == null)
+            {
+                throw new Exception("Product not found");
+            }
+            return product; //Se retorna el producto encontrado
         }
 
         public async Task<IEnumerable<Product>> GetProducts()
