@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using taller1WebMovil.Src.DTOs;
+using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Interfaces;
+
 
 namespace taller1WebMovil.Src.Controllers
 {
@@ -10,10 +12,14 @@ namespace taller1WebMovil.Src.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserRepository _userRepository;
+        private readonly IBlacklistedTokenRepository _blacklistedTokenRepository;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IUserRepository userRepository, IAuthService authService, IBlacklistedTokenRepository blacklistedTokenRepository)
         {
             _authService = authService;
+            _userRepository = userRepository;
+            _blacklistedTokenRepository = blacklistedTokenRepository;
         }
 
         [HttpPost("login")]
@@ -39,6 +45,16 @@ namespace taller1WebMovil.Src.Controllers
             {
                 return BadRequest(e.Message); //si no se logra registrar, se retorna un mensaje de error, los de errores de servidor
             }
+        }
+
+        [HttpPost("logout")]
+        [ServiceFilter(typeof(TokenBlacklistAuthorizationFilter))] 
+        public async Task<ActionResult<string>> Logout()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            int userId = await _userRepository.ObtenerUserIdPorToken(token);
+            await _blacklistedTokenRepository.AddTokenToBlacklist(userId, token);
+            return Ok("Sesión cerrada exitosamente.");
         }
     }
 }

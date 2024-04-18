@@ -1,4 +1,8 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using taller1WebMovil.Src.Data;
 using taller1WebMovil.Src.Models;
 using taller1WebMovil.Src.Repositories.Interfaces;
@@ -11,10 +15,13 @@ namespace taller1WebMovil.Src.Repositories.Implements
 
         private readonly IRoleRepository _roleRepository;
 
-        public UserRepository(DataContext context, IRoleRepository roleRepository) //Inyección de dependencia
+        private readonly IConfiguration _configuration;
+
+        public UserRepository(DataContext context, IRoleRepository roleRepository, IConfiguration configuration) //Inyección de dependencia
         {
             _context = context;
             _roleRepository = roleRepository;
+            _configuration = configuration;
         }
 
         public async Task AddUser(User user) //Método para agregar un usuario
@@ -44,6 +51,37 @@ namespace taller1WebMovil.Src.Repositories.Implements
         {   
             var users = await _context.Users.ToListAsync(); //Se obtienen todos los usuarios de la base de datos
             return users; //Se retornan los usuarios encontrados
+        }
+
+        public async Task<int> ObtenerUserIdPorToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenValue = _configuration.GetSection("AppSettings:Token").Value;
+    
+            if (tokenValue == null)
+            {
+                // Manejar el caso donde el token está ausente en la configuración
+                throw new InvalidOperationException("La clave 'AppSettings:Token' no está presente en la configuración.");
+            }
+
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
+            
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == "Id");
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return userId;
+            }
+            return 0;
         }
 
         public Task SaveChanges()

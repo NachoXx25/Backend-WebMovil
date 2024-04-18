@@ -24,6 +24,10 @@ builder.Services.AddScoped<IMapperService, MapperService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddScoped<TokenBlacklistAuthorizationFilter>(); // Agregar el filtro aquí
+
+builder.Services.AddScoped<IBlacklistedTokenRepository, BlacklistedTokenRepository>();
+
 
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {

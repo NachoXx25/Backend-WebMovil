@@ -2133,32 +2133,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\TheNachoXx\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\GUBIER\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\TheNachoXx\\Desktop\\taller1WebMovil\\taller1WebMovil.csproj",
+      "projectUniqueName": "C:\\Users\\GUBIER\\Backend-WebMovil\\taller1WebMovil.csproj",
       "projectName": "taller1WebMovil",
-      "projectPath": "C:\\Users\\TheNachoXx\\Desktop\\taller1WebMovil\\taller1WebMovil.csproj",
-      "packagesPath": "C:\\Users\\TheNachoXx\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\TheNachoXx\\Desktop\\taller1WebMovil\\obj\\",
+      "projectPath": "C:\\Users\\GUBIER\\Backend-WebMovil\\taller1WebMovil.csproj",
+      "packagesPath": "C:\\Users\\GUBIER\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\GUBIER\\Backend-WebMovil\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\TheNachoXx\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\GUBIER\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
