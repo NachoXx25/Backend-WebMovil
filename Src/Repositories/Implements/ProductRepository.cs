@@ -47,9 +47,9 @@ namespace taller1WebMovil.Src.Repositories.Implements
         public async Task<Product> GetProductByNameAndType(string name, string type)
         {
             var product = await _context.Products.Where(p => p.Name == name & p.Type == type).FirstOrDefaultAsync(); //Se obtiene el producto por su nombre y tipo
-            if(product == null)
+            if(product != null)
             {
-                throw new Exception("Product not found");
+                throw new Exception("Producto ya existe");
             }
             return product; //Se retorna el producto encontrado
         }
