@@ -2133,19 +2133,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\GUBIER\\.nuget\\packages\\": {}
+    "C:\\Users\\Gubier\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\GUBIER\\Backend-WebMovil\\taller1WebMovil.csproj",
+      "projectUniqueName": "C:\\Users\\Gubier\\Backend-WebMovil\\taller1WebMovil.csproj",
       "projectName": "taller1WebMovil",
-      "projectPath": "C:\\Users\\GUBIER\\Backend-WebMovil\\taller1WebMovil.csproj",
-      "packagesPath": "C:\\Users\\GUBIER\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\GUBIER\\Backend-WebMovil\\obj\\",
+      "projectPath": "C:\\Users\\Gubier\\Backend-WebMovil\\taller1WebMovil.csproj",
+      "packagesPath": "C:\\Users\\Gubier\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Gubier\\Backend-WebMovil\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\GUBIER\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Gubier\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -2232,7 +2232,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

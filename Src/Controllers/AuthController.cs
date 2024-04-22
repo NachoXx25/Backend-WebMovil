@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Interfaces;
-
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace taller1WebMovil.Src.Controllers
 {
@@ -13,25 +14,30 @@ namespace taller1WebMovil.Src.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IUserRepository _userRepository;
-        private readonly IBlacklistedTokenRepository _blacklistedTokenRepository;
 
-        public AuthController(IUserRepository userRepository, IAuthService authService, IBlacklistedTokenRepository blacklistedTokenRepository)
+        public AuthController(IUserRepository userRepository, IAuthService authService)
         {
             _authService = authService;
             _userRepository = userRepository;
-            _blacklistedTokenRepository = blacklistedTokenRepository;
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<string>> LoginUser(LoginUserDTO loginUserDTO) //metodo para loguear un usuario
         {
             var result = await _authService.LoginUser(loginUserDTO); //se llama al metodo de login
-            if (result != null){
+            if (result != null)
+            {
+                // Crear la cookie de token
+                Response.Cookies.Append("token", result, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = DateTime.UtcNow.AddHours(1) // Expira en 1 hora
+                });
                 return Ok(result); //se retorna el token
             }
             return BadRequest("Credenciales inválidas."); //si no se logra loguear, se retorna un mensaje de credenciales inválidas
         }
-        
+
 
         [HttpPost("register")]
         public async Task<ActionResult<string>> RegisterUser(RegisterUserDTO registerUserDTO) //metodo para registrar un usuario
@@ -47,13 +53,11 @@ namespace taller1WebMovil.Src.Controllers
             }
         }
 
-        [HttpPost("logout")]
-        [ServiceFilter(typeof(TokenBlacklistAuthorizationFilter))] 
+        [HttpGet("logout")]
         public async Task<ActionResult<string>> Logout()
         {
-            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            int userId = await _userRepository.ObtenerUserIdPorToken(token);
-            await _blacklistedTokenRepository.AddTokenToBlacklist(userId, token);
+            // Eliminar la cookie de token
+            Response.Cookies.Delete("token");
             return Ok("Sesión cerrada exitosamente.");
         }
     }
