@@ -9,9 +9,13 @@ namespace taller1WebMovil.Src.Services.Interfaces
 
         Task<string> AddProduct(ProductDTO productDTO); //Se obtiene un producto
 
-        Task<Product> UpdateProduct(int id); //Se actualiza un producto
+        Task<ProductDTO> UpdateProduct(int id, ProductDTO productDTO); //Se actualiza un producto
 
         Task<Product?> GetProductById(int id); //Obtiene el producto por id
+
+        Task<ProductDTO?> GetProductByNameAndType(ProductDTO productDTO); //Se obtiene un producto por nombre y tipo
+
+        Task VerifyNameAndType(ProductDTO productDTO); //Se verifica el nombre del producto
  
         Task DeleteProduct(int id); //Se elimina un producto
     }

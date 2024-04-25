@@ -9,6 +9,7 @@ namespace taller1WebMovil.Src.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Purchase> Purchases { get; set; }
         public DataContext(DbContextOptions options) : base(options)
         {
             
