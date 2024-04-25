@@ -7,7 +7,6 @@ using taller1WebMovil.Src.Services.Interfaces;
 namespace taller1WebMovil.Src.Controllers
 {
     [ApiController]
-    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
@@ -21,6 +20,7 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<UserDTO>> GetAllUsers() //metodo para obtener todos los usuarios
         {
             var users = _service.GetNonAdminUsers().Result; //se obtienen todos los usuarios
@@ -33,6 +33,7 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpPut("{rut}/disable")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<UserDTO> DisableAccount(string rut){
             try{
                 var user = _service.DisableAccount(rut).Result;
@@ -44,6 +45,7 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpPut("{rut}/enable")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<UserDTO> EnableAccount(string Rut){
             try{
                 var user = _service.EnableAccount(Rut).Result;

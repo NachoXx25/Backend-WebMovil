@@ -13,6 +13,12 @@ namespace taller1WebMovil.Src.Services.Implements
             _mapper = mapper;
         }
 
+        public User EdiProfileDTOToUser(UserProfileEditDTO userEditDTO)
+        {
+            var mappedUserEditDTO = _mapper.Map<User> (userEditDTO);
+            return mappedUserEditDTO;
+        }
+
         public Product ProductDTOToProduct(ProductDTO productDTO)
         {
             var mappedProductDTO = _mapper.Map<Product>(productDTO);
