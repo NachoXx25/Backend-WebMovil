@@ -1,3 +1,4 @@
+using BCrypt.Net;
 using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 using taller1WebMovil.Src.Repositories.Interfaces;
@@ -86,7 +87,37 @@ namespace taller1WebMovil.Src.Services.Implements
                 // Manejar excepciones aquí, por ejemplo, loguear el error
                 Console.WriteLine($"Error al editar el usuario: {ex.Message}");
                 return false;
+            }  
+        }
+
+        public async Task<bool> EditPassword(int userId, EditPasswordDTO editPasswordDTO)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(userId);
+
+                if(user == null)
+                {
+                    Console.WriteLine($"No hay us");
+                    return false;
+                }
+
+                var result = BCrypt.Net.BCrypt.Verify(editPasswordDTO.Password, user.Password);
+
+                if(!result)
+                {
+                    return false;
+                }
+                var salt = BCrypt.Net.BCrypt.GenerateSalt(12); //Se genera una sal para hashear la contraseña
+                user.Password = BCrypt.Net.BCrypt.HashPassword(editPasswordDTO.NewPassword, salt);
+                await _repository.SaveChanges();
+                return true;
             }
-}
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cambiar contraseña: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

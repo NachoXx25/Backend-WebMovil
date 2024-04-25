@@ -81,5 +81,27 @@ namespace taller1WebMovil.Src.Controllers
                 return NotFound("Usuario no encontrado"); 
             }
         }
+
+        [HttpPut("edit-password/{userId}")]
+        public async Task<ActionResult<string>> EditPasswordUser(int userId, [FromBody] EditPasswordDTO editPasswordDTO)
+        {
+            Console.WriteLine($"Mod y proceso");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            bool editPassword = await _service.EditPassword(userId, editPasswordDTO);
+
+            if(editPassword)
+            {
+                return Ok("Contraseña cambiada con exito");
+            }
+
+            else
+            {
+                return NotFound("No se ha podido generar el cambio de contraseña"); 
+            }
+        }
     }
 }

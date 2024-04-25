@@ -13,5 +13,7 @@ namespace taller1WebMovil.Src.Services.Interfaces
         Task<User> EnableAccount(string rut); //Se habilita una cuenta
 
         Task<bool> EditUser(int userId, UserProfileEditDTO userProfileEditDTO);
+
+        Task<bool> EditPassword(int userId, EditPasswordDTO editPasswordDTO);
     }
 }
