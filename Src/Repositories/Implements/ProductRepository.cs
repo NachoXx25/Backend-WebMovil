@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using taller1WebMovil.Src.Data;
+using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 using taller1WebMovil.Src.Repositories.Interfaces;
 
@@ -38,13 +39,13 @@ namespace taller1WebMovil.Src.Repositories.Implements
             var product = _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync(); //Se obtiene el producto por su id
             if(product == null)
             {
-                throw new Exception("Product not found");
+                throw new Exception("Producto no encontrado");
             }
             return product; //Se retorna el producto encontrado
             
         }
 
-        public async Task<Product> GetProductByNameAndType(string name, string type)
+        public async Task<Product?> GetProductByNameAndType(string name, string type)
         {
             var product = await _context.Products.Where(p => p.Name == name & p.Type == type).FirstOrDefaultAsync(); //Se obtiene el producto por su nombre y tipo
             if(product != null)
@@ -63,6 +64,18 @@ namespace taller1WebMovil.Src.Repositories.Implements
         public Task SaveChanges()
         {
             return _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
+        }
+
+        public Task UpdateProduct(Product product, ProductDTO productdto)
+        {
+            product.Name = productdto.Name; //Se actualiza el nombre del producto
+            product.Type = productdto.Type; //Se actualiza el tipo del producto
+            product.Price = productdto.Price; //Se actualiza el precio del producto
+            product.Stock = productdto.Stock; //Se actualiza el stock del producto
+            product.Image = productdto.Image; //Se actualiza la imagen del producto
+            _context.Products.Update(product); //Se actualiza el producto
+            _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
+            return Task.CompletedTask;
         }
     }
 }

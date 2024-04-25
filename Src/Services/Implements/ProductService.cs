@@ -22,7 +22,7 @@ namespace taller1WebMovil.Src.Services.Implements
 
             if (await _repository.GetProductByNameAndType(mappedProduct.Name, mappedProduct.Type) != null)
             {
-                throw new Exception("Product already exists");
+                throw new Exception("Producto ya existe");
             }
 
             await _repository.AddProduct(mappedProduct);
@@ -34,7 +34,7 @@ namespace taller1WebMovil.Src.Services.Implements
             var product = await _repository.GetProductById(id);
             if (product == null)
             {
-                throw new Exception("Product not found");
+                throw new Exception("Producto no encontrado");
             }
             await _repository.DeleteProduct(product);
             await _repository.SaveChanges();
@@ -46,6 +46,11 @@ namespace taller1WebMovil.Src.Services.Implements
             return Task.FromResult(product);
         }
 
+        public async Task<ProductDTO?> GetProductByNameAndType(ProductDTO productDTO)
+        {
+            var product = await _repository.GetProductByNameAndType(productDTO.Name, productDTO.Type);
+            return _mapperService.ProductToProductDTO(product);
+        }
 
         public Task<IEnumerable<Product>> GetProducts()
         {
@@ -53,10 +58,31 @@ namespace taller1WebMovil.Src.Services.Implements
             return Task.FromResult(products);
         }
 
-        public Task<Product> UpdateProduct(int id)
+        public async Task<ProductDTO> UpdateProduct(int id, ProductDTO productDTO)
         {
-            throw new NotImplementedException();
+            var product = await _repository.GetProductById(id);
+            if (product == null)
+            {
+                throw new Exception("Producto no encontrado");
+            }
+            await _repository.UpdateProduct(product,productDTO);
+            var productDTOUpdated = _mapperService.ProductToProductDTO(product);
+            return productDTOUpdated;
+            
         }
 
+        public async Task VerifyNameAndType(ProductDTO productDTO)
+        {
+            var nameToCompare = productDTO.Name.Replace(" ", "").ToUpperInvariant();
+            var typeToCompare = productDTO.Type.Replace(" ", "").ToUpperInvariant();
+            var allProducts = await _repository.GetProducts();
+            var product = allProducts.FirstOrDefault(p => p.Name.Replace(" ", "").ToUpperInvariant() == nameToCompare 
+                                                  && p.Type.Replace(" ", "").ToUpperInvariant() == typeToCompare);
+            if (product != null)
+            {
+                throw new Exception("Producto ya existe");
+            }
+            return;
+        }
     }
 }
