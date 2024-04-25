@@ -38,6 +38,14 @@ namespace taller1WebMovil.Src.Repositories.Implements
             return user; //Se retorna el usuario encontrado
         }
 
+        public async Task<User?> GetUserById(int Id)
+        {
+            var user = await _context.Users.Where(u => u.Id == Id)
+                                        .Include(u => u.Role)
+                                        .FirstOrDefaultAsync();
+            return user;
+        }
+
         public Task<User?> GetUserByRut(string Rut)
         {
             var user = _context.Users.Where(u => u.Rut == Rut)

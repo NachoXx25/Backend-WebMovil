@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using taller1WebMovil.Src.DTOs;
@@ -53,6 +54,31 @@ namespace taller1WebMovil.Src.Controllers
 
             }catch(Exception e){
                 return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("edit-profile/{userId}")]
+        public async Task<ActionResult<string>> EditAccount(int userId, [FromBody] UserProfileEditDTO userProfileEdit)
+        {
+            // Verificar si el modelo recibido es válido
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Llamar al método de servicio para editar el usuario
+            bool editResult = await _service.EditUser(userId, userProfileEdit);
+
+            // Verificar si la edición fue exitosa
+            if (editResult)
+            {
+                // Devolver una respuesta exitosa
+                return Ok("Usuario editado con éxito");
+            }
+            else
+            {
+                // Manejar el caso en que la edición no fue exitosa
+                return NotFound("Usuario no encontrado"); 
             }
         }
     }

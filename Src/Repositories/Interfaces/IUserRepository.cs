@@ -11,6 +11,8 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
 
         Task<bool> VerifyUserByEMail(string Email); //Se verifica si un usuario existe mediante su Email
 
+        Task<User?> GetUserById(int Id);
+
         Task AddUser(User user); //Se agrega un usuario
 
         Task<bool> VerifyUserByRut(string Rut); //Se verifica si un usuario existe mediante su Rut
