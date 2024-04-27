@@ -37,7 +37,6 @@ namespace taller1WebMovil.Src.Controllers
             try{
                 var user = _service.DisableAccount(rut).Result;
                 return Ok(_mapper.UserToUserDTO(user));
-
             }catch(Exception e){
                 return BadRequest(e.Message);
             }

@@ -14,7 +14,8 @@ namespace taller1WebMovil.Src.Services.Implements
         }
 
         public Task<User> DisableAccount(string rut)
-        {
+        {   
+            rut = FormatRut(rut);
             var users = _repository.GetUserByRut(rut).Result;
 
             if(users == null){
@@ -33,6 +34,7 @@ namespace taller1WebMovil.Src.Services.Implements
 
         public Task<User> EnableAccount(string rut)
         {
+            rut = FormatRut(rut);
             var users = _repository.GetUserByRut(rut).Result;
             if(users == null){
                 throw new System.Exception("No se encontró el usuario.");
@@ -53,6 +55,26 @@ namespace taller1WebMovil.Src.Services.Implements
             var users = _repository.GetUsers().Result;
             var nonAdminUsers = users.Where(user => user.RoleId == 2).ToList();
             return Task.FromResult<IEnumerable<User>>(nonAdminUsers);
+        }
+        public static string FormatRut(string rut)
+        {
+            int cont = 0;
+            string format;
+
+            rut = rut.Replace(".", "");
+            rut = rut.Replace("-", "");
+            format = "-" + rut.Substring(rut.Length - 1);
+            for (int i = rut.Length - 2; i >= 0; i--)
+            {
+                format = rut.Substring(i, 1) + format;
+                cont++;
+                if (cont == 3 && i != 0)
+                {
+                    format = "." + format;
+                    cont = 0;
+                }
+            }
+            return format;
         }
     }
 }

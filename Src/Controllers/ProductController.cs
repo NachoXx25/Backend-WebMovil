@@ -14,10 +14,13 @@ namespace taller1WebMovil.Src.Controllers
         private readonly IProductService _productService;
         private readonly IMapperService _mapper;
 
-        public ProductController(IProductService productService, IMapperService mapper)
+        private readonly IPurchaseService _purchaseService;
+
+        public ProductController(IProductService productService, IMapperService mapper, IPurchaseService purchaseService)
         {
             _productService = productService;
             _mapper = mapper;
+            _purchaseService = purchaseService;
         }
 
         [HttpGet("all")]
@@ -67,8 +70,13 @@ namespace taller1WebMovil.Src.Controllers
             if(product == null){
                 return NotFound("No se encontró el producto.");
             }
-            await _productService.DeleteProduct(id);
-            return Ok("Producto eliminado.");
+            try{
+                await _purchaseService.GetProductPurchaseById(id);
+                await _productService.DeleteProduct(id);
+                return Ok("Producto eliminado.");
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
         }
 
     }
