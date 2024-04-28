@@ -17,24 +17,6 @@ namespace taller1WebMovil.Src.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.16");
 
-            modelBuilder.Entity("taller1WebMovil.Src.Models.BlacklistedToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BlacklistedToken");
-                });
-
             modelBuilder.Entity("taller1WebMovil.Src.Models.Product", b =>
                 {
                     b.Property<int>("Id")
