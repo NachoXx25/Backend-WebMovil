@@ -34,6 +34,7 @@ namespace taller1WebMovil.Src.Controllers
         public async Task<ActionResult<string>> AddProduct(ProductDTO productDTO){
             
             try{
+                await _productService.VerifyNameAndType(productDTO);
                 var product = await _productService.AddProduct(productDTO);
                 if(product == null){
                     return NotFound("No se pudo agregar el producto");
@@ -44,10 +45,20 @@ namespace taller1WebMovil.Src.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}/update")]
 
-        public ActionResult<ProductDTO> UptadeProduct(int id){
-            return Ok();
+        public async Task<ActionResult<ProductDTO>> UptadeProduct(int id, ProductDTO productDTO){
+            try{
+                var product = await _productService.GetProductById(id);
+                if(product == null){
+                    return NotFound("No se encontró el producto.");
+                }
+                await _productService.GetProductByNameAndType(productDTO);
+                await _productService.UpdateProduct(id, productDTO);
+                return Ok("Producto actualizado.");
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}/delete")]

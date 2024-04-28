@@ -81,6 +81,7 @@ namespace taller1WebMovil.Src.Services.Implements
             }
             mappedUser.RoleId = role.Id; //Se asigna el rol al usuario
             mappedUser.Active = true; //Se activa el usuario
+            mappedUser.Rut = FormatRut(mappedUser.Rut);
             await _userRepository.AddUser(mappedUser); //Se agrega el usuario a la base de datos
             var user = await _userRepository.GetUserByEmail(mappedUser.Email); //Se obtiene el usuario recien agregado
             if (user == null)
@@ -111,6 +112,26 @@ namespace taller1WebMovil.Src.Services.Implements
             var jwt = new JwtSecurityTokenHandler().WriteToken(token); //Se crea el token
             return jwt; //Se retorna el token
         }
+        public static string FormatRut(string rut)
+        {
+            int cont = 0;
+            string format;
 
+            rut = rut.Replace(".", "");
+            rut = rut.Replace("-", "");
+            format = "-" + rut.Substring(rut.Length - 1);
+            for (int i = rut.Length - 2; i >= 0; i--)
+            {
+                format = rut.Substring(i, 1) + format;
+                cont++;
+                if (cont == 3 && i != 0)
+                {
+                    format = "." + format;
+                    cont = 0;
+                }
+            }
+            return format;
+        }
     }
+    
 }

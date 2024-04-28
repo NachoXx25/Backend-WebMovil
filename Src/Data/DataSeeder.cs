@@ -19,7 +19,7 @@ namespace taller1WebMovil.Src.Data
                         new Role { Name = "User"}
                     );
                 }
-
+                context.SaveChanges();
                 if(!context.Users.Any()){
 
                     var user = new User {
@@ -69,7 +69,7 @@ namespace taller1WebMovil.Src.Data
                     context.Users.AddRange(users);
                     
                 }
-                
+                context.SaveChanges();
                 if(!context.Products.Any()){
                     // no se hace uso de faker en los productos debido a que su generacion de datos no es controlable, es decir puede que sea un celular pero de categoria libros
                     var product = new Product {
@@ -100,6 +100,36 @@ namespace taller1WebMovil.Src.Data
                     context.Products.Add(product);
                 }
                 context.SaveChanges(); // se guardan los cambios en la base de datos (importante)
+                var products = context.Products.ToList();
+                if (!context.Purchases.Any())
+                {
+                    foreach (var product in products)
+                    {
+                        int quantity = 2; 
+                        Random random = new Random();
+                        context.Purchases.Add(new Purchase
+                        {
+                            Date = DateTime.Now,
+                            UserId = random.Next(2,5), 
+                            ProductId = product.Id,
+                            UnitPrice = product.Price,
+                            ProductName = product.Name,
+                            ProductType = product.Type,
+                            Quantity = quantity,
+                            Total = product.Price * quantity
+                        });
+
+                        if (product.Stock >= quantity)
+                        {
+                            product.Stock -= quantity;
+                        }
+                        else
+                        {
+                            throw new Exception("No hay suficiente stock");
+                        }
+                    }
+                context.SaveChanges();
+                }
             }
         }
         private static Random random = new Random();
