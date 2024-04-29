@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using taller1WebMovil.Src.DTOs;
@@ -7,7 +8,6 @@ using taller1WebMovil.Src.Services.Interfaces;
 namespace taller1WebMovil.Src.Controllers
 {
     [ApiController]
-    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
@@ -21,6 +21,7 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<UserDTO>> GetAllUsers() //metodo para obtener todos los usuarios
         {
             var users = _service.GetNonAdminUsers().Result; //se obtienen todos los usuarios
@@ -33,6 +34,7 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpPut("{rut}/disable")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<UserDTO> DisableAccount(string rut){
             try{
                 var user = _service.DisableAccount(rut).Result;
@@ -44,6 +46,7 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpPut("{rut}/enable")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<UserDTO> EnableAccount(string Rut){
             try{
                 var user = _service.EnableAccount(Rut).Result;
@@ -51,6 +54,53 @@ namespace taller1WebMovil.Src.Controllers
 
             }catch(Exception e){
                 return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("edit-profile/{userId}")]
+        public async Task<ActionResult<string>> EditAccount(int userId, [FromBody] UserProfileEditDTO userProfileEdit)
+        {
+            // Verificar si el modelo recibido es válido
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Llamar al método de servicio para editar el usuario
+            bool editResult = await _service.EditUser(userId, userProfileEdit);
+
+            // Verificar si la edición fue exitosa
+            if (editResult)
+            {
+                // Devolver una respuesta exitosa
+                return Ok("Usuario editado con éxito");
+            }
+            else
+            {
+                // Manejar el caso en que la edición no fue exitosa
+                return NotFound("Usuario no encontrado"); 
+            }
+        }
+
+        [HttpPut("edit-password/{userId}")]
+        public async Task<ActionResult<string>> EditPasswordUser(int userId, [FromBody] EditPasswordDTO editPasswordDTO)
+        {
+            Console.WriteLine($"Mod y proceso");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            bool editPassword = await _service.EditPassword(userId, editPasswordDTO);
+
+            if(editPassword)
+            {
+                return Ok("Contraseña cambiada con exito");
+            }
+
+            else
+            {
+                return NotFound("No se ha podido generar el cambio de contraseña"); 
             }
         }
     }
