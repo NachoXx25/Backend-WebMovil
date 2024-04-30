@@ -15,6 +15,8 @@ namespace taller1WebMovil.Src.Services.Interfaces
 
         Task<ProductDTO?> GetProductByNameAndType(ProductDTO productDTO); //Se obtiene un producto por nombre y tipo
 
+        Task<IEnumerable<Product>> GetAvailableProducts(); //Se obtienen los productos disponibles
+
         Task VerifyNameAndType(ProductDTO productDTO); //Se verifica el nombre del producto
  
         Task DeleteProduct(int id); //Se elimina un producto

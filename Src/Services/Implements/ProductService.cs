@@ -40,6 +40,12 @@ namespace taller1WebMovil.Src.Services.Implements
             await _repository.SaveChanges();
         }
 
+        public Task<IEnumerable<Product>> GetAvailableProducts()
+        {
+            var products = _repository.AvailableProducts().Result;
+            return Task.FromResult(products);
+        }
+
         public Task<Product?> GetProductById(int id)
         {
             var product = _repository.GetProductById(id).Result;

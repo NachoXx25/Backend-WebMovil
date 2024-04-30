@@ -21,6 +21,11 @@ namespace taller1WebMovil.Src.Repositories.Implements
             await _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
         }
 
+        public async Task<IEnumerable<Product>> AvailableProducts()
+        {
+            var products = await _context.Products.Where(p => p.Stock > 0).ToListAsync(); //Se obtienen los productos disponibles
+            return products;
+        }
 
         public async Task<bool> DeleteProduct(Product product)
         {

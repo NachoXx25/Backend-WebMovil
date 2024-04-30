@@ -15,6 +15,8 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
         
         Task UpdateProduct(Product product,ProductDTO productdto); //Se actualiza un producto
 
+        Task<IEnumerable<Product>> AvailableProducts(); //Se obtienen los productos disponibles
+
         Task<Product?> GetProductByNameAndType(string name, string type); //Se obtiene un producto mediante su nombre y tipo
         public Task SaveChanges();
     }
