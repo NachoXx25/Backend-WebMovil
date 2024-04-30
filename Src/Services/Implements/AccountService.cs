@@ -96,26 +96,38 @@ namespace taller1WebMovil.Src.Services.Implements
             {
                 var user = await _repository.GetUserById(userId);
 
-                if(user == null)
+                if (user == null)
                 {
-                    Console.WriteLine($"No hay us");
+                    Console.WriteLine($"No se encontró el usuario con ID: {userId}");
+                    return false;
+                }
+
+                if (string.IsNullOrEmpty(editPasswordDTO.Password))
+                {
+                    return false;
+                }
+
+                if (editPasswordDTO.NewPassword != editPasswordDTO.ConfirmPassword)
+                {
                     return false;
                 }
 
                 var result = BCrypt.Net.BCrypt.Verify(editPasswordDTO.Password, user.Password);
 
-                if(!result)
+                if (!result)
                 {
                     return false;
                 }
-                var salt = BCrypt.Net.BCrypt.GenerateSalt(12); //Se genera una sal para hashear la contraseña
+
+                var salt = BCrypt.Net.BCrypt.GenerateSalt(12);
                 user.Password = BCrypt.Net.BCrypt.HashPassword(editPasswordDTO.NewPassword, salt);
                 await _repository.SaveChanges();
+
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al cambiar contraseña: {ex.Message}");
+                Console.WriteLine($"Error al cambiar la contraseña: {ex.Message}");
                 return false;
             }
         }
