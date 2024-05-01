@@ -23,5 +23,22 @@ namespace taller1WebMovil.Src.Repositories.Implements
             return false;
         }
 
+        public Task<IEnumerable<Purchase>> GetPurchases()
+        {
+            var purchases = _context.Purchases.ToList();
+            return Task.FromResult<IEnumerable<Purchase>>(purchases);
+        }
+
+        public Task MakePurchase(Purchase purchase)
+        {
+            _context.Purchases.Add(purchase);
+            var product = _context.Products.FirstOrDefault(p => p.Id == purchase.ProductId);
+            if(product == null){
+                throw new Exception("Producto no encontrado");
+            }
+            product.Stock -= purchase.Quantity;
+            _context.SaveChanges();
+            return Task.CompletedTask;
+        }
     }
 }
