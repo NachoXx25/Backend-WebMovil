@@ -62,33 +62,44 @@ namespace taller1WebMovil.Src.Services.Implements
         }
 
         public async Task<bool> EditUser(int userId, UserProfileEditDTO userProfileEditDTO)
-        {
-            try
             {
-                var user = await _repository.GetUserById(userId);
-
-                if (user == null)
+                try
                 {
-                    return false;
+                    var user = await _repository.GetUserById(userId);
+
+                    if (user == null)
+                    {
+                        return false;
+                    }
+
+                    // Actualizar solo los campos que se proporcionan en el DTO
+                    if (!string.IsNullOrEmpty(userProfileEditDTO.Name))
+                    {
+                        user.Name = userProfileEditDTO.Name;
+                    }
+
+                    if (userProfileEditDTO.BirthDate != default)
+                    {
+                        user.BirthDate = userProfileEditDTO.BirthDate;
+                    }
+
+                    if (!string.IsNullOrEmpty(userProfileEditDTO.Gender))
+                    {
+                        user.Gender = userProfileEditDTO.Gender;
+                    }
+
+                    // Guardar los cambios en la base de datos
+                    await _repository.SaveChanges();
+
+                    return true;
                 }
-
-                // Actualizar los datos del usuario con los datos del DTO
-                user.Name = userProfileEditDTO.Name;
-                user.BirthDate = userProfileEditDTO.BirthDate;
-                user.Gender = userProfileEditDTO.Gender;
-
-                // Guardar los cambios en la base de datos
-                await _repository.SaveChanges();
-
-                return true;
+                catch (Exception ex)
+                {
+                    // Manejar excepciones aquí, por ejemplo, loguear el error
+                    Console.WriteLine($"Error al editar el usuario: {ex.Message}");
+                    return false;
+                }  
             }
-            catch (Exception ex)
-            {
-                // Manejar excepciones aquí, por ejemplo, loguear el error
-                Console.WriteLine($"Error al editar el usuario: {ex.Message}");
-                return false;
-            }  
-        }
 
         public async Task<bool> EditPassword(int userId, EditPasswordDTO editPasswordDTO)
         {
