@@ -71,7 +71,6 @@ namespace taller1WebMovil.Src.Controllers
                 return NotFound("No se encontró el producto.");
             }
             try{
-                await _purchaseService.GetProductPurchaseById(id);
                 await _productService.DeleteProduct(id);
                 return Ok("Producto eliminado.");
             }catch(Exception e){
