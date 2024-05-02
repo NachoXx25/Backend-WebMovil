@@ -1,22 +1,30 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace taller1WebMovil.Src.Validations
 {
     public class NameAttributeEditProfile : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object value, ValidationContext validationContext)
         {
-            string nombre = value as string;
-            if (!string.IsNullOrEmpty(nombre))
+            string? name = value as string;
+            if (!string.IsNullOrEmpty(name))
             {
-                if (nombre.Length < 10)
+                if (name.Length < 10)
                 {
                     return new ValidationResult("El nombre debe tener al menos 10 caracteres");
                 }
-                if (nombre.Length > 64)
+                if (name.Length > 64)
                 {
                     return new ValidationResult("El nombre debe tener como máximo 64 caracteres");
                 }
+                Regex regex = new Regex(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$");
+
+                if (!regex.IsMatch(name))
+                {
+                    return new ValidationResult("El nombre solo puede contener letras"); //Nombre solo puede contener letras
+                }
+                return ValidationResult.Success;
             }
             return ValidationResult.Success;
         }
