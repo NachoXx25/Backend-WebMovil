@@ -18,5 +18,7 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
         Task<User?> GetUserByRut(string Rut); //Se obtiene un usuario mediante su Rut
 
         Task SaveChanges(); //Se guardan los cambios en la base de datos
+
+        Task<User?> GetUserById(int id); //Se obtiene un usuario mediante su id
     }
 }

@@ -8,12 +8,14 @@ namespace taller1WebMovil.Src.Services.Implements
     {
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IProductService _productService;
-        public PurchaseService(IPurchaseRepository purchaseRepository, IProductService productService)
+
+        private readonly IUserRepository _userRepository;
+        public PurchaseService(IPurchaseRepository purchaseRepository, IProductService productService, IUserRepository userRepository)
         {
             _purchaseRepository = purchaseRepository;
             _productService = productService;
+            _userRepository = userRepository;
         }
-        
         public async Task GetProductPurchaseById(int id)
         {
             var confirm = await _purchaseRepository.GetProductPurchaseById(id);
@@ -32,6 +34,10 @@ namespace taller1WebMovil.Src.Services.Implements
         public Task<Purchase> MakePurchase(int id, int quantity, int userId)
         {
             var product = _productService.GetProductById(id).Result;
+            var user = _userRepository.GetUserById(userId).Result;
+            if(user == null){
+                throw new Exception("Usuario no encontrado");
+            }
             if(product == null){
                 throw new Exception("Producto no encontrado");
             }

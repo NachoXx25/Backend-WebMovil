@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using taller1WebMovil.Src.DTOs;
@@ -30,10 +31,16 @@ namespace taller1WebMovil.Src.Controllers
             return Ok(productDTOs);
         }
         [Authorize(Roles = "User")]
-        [HttpPost("{id}/{quantity}/{userId}/buy")]
-        public ActionResult<PurchaseDTO> MakePurchase(int id, int quantity, int userId){
+        [HttpPost("{id}/{quantity}/buy")]
+        public ActionResult<PurchaseDTO> MakePurchase(int id, int quantity){
 
             try{
+                var token = Request.Headers["Authorization"].ToString().Split(' ')[1]; // Se obtiene el token
+                var handler = new JwtSecurityTokenHandler(); // Se crea un manejador de tokens
+                var jwtToken = handler.ReadJwtToken(token); // Se lee la token
+                // Se accede a los claims de la token
+                var userId = jwtToken.Claims.First(claim => claim.Type == "Id").Value;
+                int IdUser = int.Parse(userId); // Se obtiene el id del usuario y se parsea a entero
                 if(id <= 0){
                     return BadRequest("El id debe ser mayor a 0");
                 }
@@ -47,7 +54,7 @@ namespace taller1WebMovil.Src.Controllers
                 if(quantity > product.Stock){
                     return BadRequest("No hay suficiente stock");
                 }
-                var purchase = _purchaseService.MakePurchase(id, quantity, userId).Result;
+                var purchase = _purchaseService.MakePurchase(id, quantity, IdUser).Result;
                 return Ok(_mapper.PurchaseToPurchaseDTO(purchase));
             }catch(Exception e){
                 return BadRequest(e.Message);
