@@ -47,8 +47,7 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpPut("{id}/update")]
-
-        public async Task<ActionResult<string>> UptadeProduct(int id, [FromBody] UpdateProductDTO productDTO)
+        public async Task<ActionResult<UpdateProductDTO>> UptadeProduct(int id, [FromBody] UpdateProductDTO productDTO)
             {
                 try
                 {
@@ -56,8 +55,8 @@ namespace taller1WebMovil.Src.Controllers
                     {
                         return BadRequest(ModelState);
                     }
-                    await _productService.UpdateProduct(id, productDTO);
-                    return Ok("Producto actualizado");
+                    var updateProductDTO = await _productService.UpdateProduct(id, productDTO);
+                    return Ok(updateProductDTO);
                 }
                 catch(Exception e)
                 {

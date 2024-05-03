@@ -64,7 +64,7 @@ namespace taller1WebMovil.Src.Services.Implements
             return Task.FromResult(products);
         }
 
-        public async Task UpdateProduct(int id, UpdateProductDTO productDTO)
+        public async Task<UpdateProductDTO> UpdateProduct(int id, UpdateProductDTO productDTO)
         {
             {
                 var product = await _repository.GetProductById(id);
@@ -93,13 +93,15 @@ namespace taller1WebMovil.Src.Services.Implements
                 }
                 if(productDTO.Stock.HasValue)
                 {
-                    product.Stock = productDTO.Stock.Value ;
+                    product.Stock = productDTO.Stock.Value;
                 }
                 if(!string.IsNullOrEmpty(productDTO.Image))
                 {
                     product.Image = productDTO.Image ?? product.Image;
                 }
                 await _repository.SaveChanges();
+                var updateProductDTO = _mapperService.ProductToUpdateProductDTO(product);
+                return updateProductDTO;
             }
         }
 
