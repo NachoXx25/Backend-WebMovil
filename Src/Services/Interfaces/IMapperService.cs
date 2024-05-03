@@ -20,5 +20,7 @@ namespace taller1WebMovil.Src.Services.Interfaces
         public ProductDTO UpdateProductDTOToProduct(UpdateProductDTO updateProductDTO); //mapeo de UpdateProductDTO a Product
 
         public UpdateProductDTO ProductToUpdateProductDTO(Product product); //Mapeo de product a updateProductDTO
+
+         public User EdiProfileDTOToUser(UserProfileEditDTO userEditDTO);
     }
 }

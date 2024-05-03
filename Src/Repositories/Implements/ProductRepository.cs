@@ -44,13 +44,13 @@ namespace taller1WebMovil.Src.Repositories.Implements
             var product = _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync(); //Se obtiene el producto por su id
             if(product == null)
             {
-                throw new Exception("Producto no encontrado");
+                throw new Exception("Product not found");
             }
             return product; //Se retorna el producto encontrado
             
         }
 
-        public async Task<Product?> GetProductByNameAndType(string name, string type)
+        public async Task<Product> GetProductByNameAndType(string name, string type)
         {
             var product = await _context.Products.Where(p => p.Name == name & p.Type == type).FirstOrDefaultAsync(); //Se obtiene el producto por su nombre y tipo
             if(product != null)

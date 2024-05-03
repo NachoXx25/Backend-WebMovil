@@ -1,3 +1,5 @@
+using BCrypt.Net;
+using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Interfaces;
@@ -8,9 +10,13 @@ namespace taller1WebMovil.Src.Services.Implements
     {
         private readonly IUserRepository _repository;
 
-        public AccountService(IUserRepository repository)
+        private readonly IMapperService _mapperService;
+
+        public AccountService(IUserRepository repository, IMapperService mapperService)
         {
             _repository = repository;
+
+            _mapperService = mapperService;
         }
 
         public Task<User> DisableAccount(string rut)
@@ -75,6 +81,88 @@ namespace taller1WebMovil.Src.Services.Implements
                 }
             }
             return format;
+        }
+
+        public async Task<bool> EditUser(int userId, UserProfileEditDTO userProfileEditDTO)
+            {
+                try
+                {
+                    var user = await _repository.GetUserById(userId);
+
+                    if (user == null)
+                    {
+                        return false;
+                    }
+
+                    // Actualizar solo los campos que se proporcionan en el DTO
+                    if (!string.IsNullOrEmpty(userProfileEditDTO.Name))
+                    {
+                        user.Name = userProfileEditDTO.Name;
+                    }
+
+                    if (userProfileEditDTO.BirthDate != default)
+                    {
+                        user.BirthDate = userProfileEditDTO.BirthDate;
+                    }
+
+                    if (!string.IsNullOrEmpty(userProfileEditDTO.Gender))
+                    {
+                        user.Gender = userProfileEditDTO.Gender;
+                    }
+
+                    // Guardar los cambios en la base de datos
+                    await _repository.SaveChanges();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    // Manejar excepciones aquí, por ejemplo, loguear el error
+                    Console.WriteLine($"Error al editar el usuario: {ex.Message}");
+                    return false;
+                }  
+            }
+
+        public async Task<bool> EditPassword(int userId, EditPasswordDTO editPasswordDTO)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(userId);
+
+                if (user == null)
+                {
+                    Console.WriteLine($"No se encontró el usuario con ID: {userId}");
+                    return false;
+                }
+
+                if (string.IsNullOrEmpty(editPasswordDTO.Password))
+                {
+                    return false;
+                }
+
+                if (editPasswordDTO.NewPassword != editPasswordDTO.ConfirmPassword)
+                {
+                    return false;
+                }
+
+                var result = BCrypt.Net.BCrypt.Verify(editPasswordDTO.Password, user.Password);
+
+                if (!result)
+                {
+                    return false;
+                }
+
+                var salt = BCrypt.Net.BCrypt.GenerateSalt(12);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(editPasswordDTO.NewPassword, salt);
+                await _repository.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cambiar la contraseña: {ex.Message}");
+                return false;
+            }
         }
     }
 }

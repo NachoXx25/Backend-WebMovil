@@ -1,4 +1,8 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using taller1WebMovil.Src.Data;
 using taller1WebMovil.Src.Models;
 using taller1WebMovil.Src.Repositories.Interfaces;
@@ -11,10 +15,13 @@ namespace taller1WebMovil.Src.Repositories.Implements
 
         private readonly IRoleRepository _roleRepository;
 
-        public UserRepository(DataContext context, IRoleRepository roleRepository) //Inyección de dependencia
+        private readonly IConfiguration _configuration;
+
+        public UserRepository(DataContext context, IRoleRepository roleRepository, IConfiguration configuration) //Inyección de dependencia
         {
             _context = context;
             _roleRepository = roleRepository;
+            _configuration = configuration;
         }
 
         public async Task AddUser(User user) //Método para agregar un usuario
@@ -53,6 +60,7 @@ namespace taller1WebMovil.Src.Repositories.Implements
             var users = await _context.Users.ToListAsync(); //Se obtienen todos los usuarios de la base de datos
             return users; //Se retornan los usuarios encontrados
         }
+
 
         public Task SaveChanges()
         {
