@@ -1,3 +1,4 @@
+using System.Diagnostics.Tracing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using taller1WebMovil.Src.DTOs;
@@ -14,13 +15,10 @@ namespace taller1WebMovil.Src.Controllers
         private readonly IProductService _productService;
         private readonly IMapperService _mapper;
 
-        private readonly IPurchaseService _purchaseService;
-
-        public ProductController(IProductService productService, IMapperService mapper, IPurchaseService purchaseService)
+        public ProductController(IProductService productService, IMapperService mapper)
         {
             _productService = productService;
             _mapper = mapper;
-            _purchaseService = purchaseService;
         }
 
         [HttpGet("all")]
@@ -50,20 +48,22 @@ namespace taller1WebMovil.Src.Controllers
 
         [HttpPut("{id}/update")]
 
-        public async Task<ActionResult<ProductDTO>> UptadeProduct(int id, ProductDTO productDTO){
-            try{
-                var product = await _productService.GetProductById(id);
-                if(product == null){
-                    return NotFound("No se encontró el producto.");
+        public async Task<ActionResult<string>> UptadeProduct(int id, [FromBody] UpdateProductDTO productDTO)
+            {
+                try
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return BadRequest(ModelState);
+                    }
+                    await _productService.UpdateProduct(id, productDTO);
+                    return Ok("Producto actualizado");
                 }
-                await _productService.GetProductByNameAndType(productDTO);
-                await _productService.UpdateProduct(id, productDTO);
-                return Ok("Producto actualizado.");
-            }catch(Exception e){
-                return BadRequest(e.Message);
+                catch(Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
             }
-        }
-
         [HttpDelete("{id}/delete")]
         public async Task<ActionResult<string>> DeleteProduct(int id){
             var product = await _productService.GetProductById(id);
