@@ -21,6 +21,11 @@ namespace taller1WebMovil.Src.Repositories.Implements
             await _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
         }
 
+        public async Task<IEnumerable<Product>> AvailableProducts()
+        {
+            var products = await _context.Products.Where(p => p.Stock > 0).ToListAsync(); //Se obtienen los productos disponibles
+            return products;
+        }
 
         public async Task<bool> DeleteProduct(Product product)
         {
@@ -64,18 +69,6 @@ namespace taller1WebMovil.Src.Repositories.Implements
         public Task SaveChanges()
         {
             return _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
-        }
-
-        public Task UpdateProduct(Product product, ProductDTO productdto)
-        {
-            product.Name = productdto.Name; //Se actualiza el nombre del producto
-            product.Type = productdto.Type; //Se actualiza el tipo del producto
-            product.Price = productdto.Price; //Se actualiza el precio del producto
-            product.Stock = productdto.Stock; //Se actualiza el stock del producto
-            product.Image = productdto.Image; //Se actualiza la imagen del producto
-            _context.Products.Update(product); //Se actualiza el producto
-            _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
-            return Task.CompletedTask;
         }
     }
 }

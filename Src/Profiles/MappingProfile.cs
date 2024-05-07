@@ -13,6 +13,9 @@ namespace taller1WebMovil.Src.Profiles
             CreateMap<UserProfileEditDTO, User>();  //Mapeo de UserProfileEditDTO a User
             CreateMap<ProductDTO, Product>(); //Mapeo de ProductDTO a Product
             CreateMap<Product, ProductDTO>(); //Mapeo de Product a ProductDTO
+            CreateMap<Purchase, PurchaseDTO>(); //Mapeo de Purchase a PurchaseDTO
+            CreateMap<UpdateProductDTO, ProductDTO>(); //Mapeo de UpdateProductDTO a ProductDTO
+            CreateMap<Product, UpdateProductDTO>(); //Mapeo de product a updateProductDTO
         }
     }
 }
