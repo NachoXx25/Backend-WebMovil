@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("taller1WebMovil")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+664552aae0099591cb5dba8644aac1b57badac74")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+844b655ffba46a6e643125745a9391d456d3fd20")]
 [assembly: System.Reflection.AssemblyProductAttribute("taller1WebMovil")]
 [assembly: System.Reflection.AssemblyTitleAttribute("taller1WebMovil")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

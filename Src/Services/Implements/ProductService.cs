@@ -40,6 +40,12 @@ namespace taller1WebMovil.Src.Services.Implements
             await _repository.SaveChanges();
         }
 
+        public Task<IEnumerable<Product>> GetAvailableProducts()
+        {
+            var products = _repository.AvailableProducts().Result;
+            return Task.FromResult(products);
+        }
+
         public Task<Product?> GetProductById(int id)
         {
             var product = _repository.GetProductById(id).Result;
@@ -58,17 +64,45 @@ namespace taller1WebMovil.Src.Services.Implements
             return Task.FromResult(products);
         }
 
-        public async Task<ProductDTO> UpdateProduct(int id, ProductDTO productDTO)
+        public async Task<UpdateProductDTO> UpdateProduct(int id, UpdateProductDTO productDTO)
         {
-            var product = await _repository.GetProductById(id);
-            if (product == null)
             {
-                throw new Exception("Producto no encontrado");
+                var product = await _repository.GetProductById(id);
+                if (product == null)
+                {
+                    throw new Exception("Producto no encontrado");
+                }
+                var productDTOToCompare = _mapperService.UpdateProductDTOToProduct(productDTO);
+                await GetProductByNameAndType(productDTOToCompare);
+                if(!string.IsNullOrEmpty(productDTO.Name))
+                {
+                    product.Name = productDTO.Name ?? product.Name;
+                }
+                if(!string.IsNullOrEmpty(productDTO.Type))
+                {
+                    var categorias = new string[] {"Tecnología", "Electrohogar", "Juguetería", "Ropa", "Muebles", "Comida", "Libros"};
+                    if (!categorias.Any(categoria => categoria.Equals(productDTO.Type, StringComparison.Ordinal)))
+                    {
+                        throw new Exception("Categoría no válida (categorías válidas: Tecnología, Electrohogar, Juguetería, Ropa, Muebles, Comida, Libros)");
+                    }
+                    product.Type = productDTO.Type ?? product.Type;
+                }
+                if(productDTO.Price.HasValue)
+                {
+                    product.Price = productDTO.Price.Value;
+                }
+                if(productDTO.Stock.HasValue)
+                {
+                    product.Stock = productDTO.Stock.Value;
+                }
+                if(!string.IsNullOrEmpty(productDTO.Image))
+                {
+                    product.Image = productDTO.Image ?? product.Image;
+                }
+                await _repository.SaveChanges();
+                var updateProductDTO = _mapperService.ProductToUpdateProductDTO(product);
+                return updateProductDTO;
             }
-            await _repository.UpdateProduct(product,productDTO);
-            var productDTOUpdated = _mapperService.ProductToProductDTO(product);
-            return productDTOUpdated;
-            
         }
 
         public async Task VerifyNameAndType(ProductDTO productDTO)

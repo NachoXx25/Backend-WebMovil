@@ -15,8 +15,7 @@ namespace taller1WebMovil.Src.Models
         public User User { get; set; } = null!; //Relacion con la tabla User
         public int UserId { get; set; } //Clave foranea
     
-        public Product Product { get; set; } = null!; //Relacion con la tabla Product
-        public int ProductId { get; set; } //Clave foranea
+        public int ProductId { get; set; } //Id del producto
 
         public int UnitPrice { get; set; } //Requerido
 
