@@ -172,5 +172,23 @@ namespace taller1WebMovil.Src.Services.Implements
                 return false;
             }
         }
+
+        public async Task<IEnumerable<UserDTO>> SearchUsers(string searchString)
+        {
+            var users = await _repository.GetUsers();
+            
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Realizar búsqueda por nombre y rut
+                users = users.Where(p =>
+                    p.Name.Contains(searchString, System.StringComparison.OrdinalIgnoreCase) ||
+                    p.Rut.Contains(searchString, System.StringComparison.OrdinalIgnoreCase) ||
+                    p.Email.Contains(searchString, System.StringComparison.OrdinalIgnoreCase)   ||
+                    p.Gender.Contains(searchString, System.StringComparison.OrdinalIgnoreCase)
+                );
+            }
+
+            return users.Select(p => _mapperService.UserToUserDTO(p));
+        }
     }
 }

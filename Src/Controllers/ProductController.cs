@@ -21,7 +21,7 @@ namespace taller1WebMovil.Src.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("search/{searchString}")]
+        [HttpGet("search/{searchString}")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchString)
         {
             try
