@@ -1,3 +1,4 @@
+using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 
 namespace taller1WebMovil.Src.Services.Interfaces
