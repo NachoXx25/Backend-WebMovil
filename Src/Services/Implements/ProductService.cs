@@ -11,13 +11,21 @@ namespace taller1WebMovil.Src.Services.Implements
 
         private readonly IMapperService _mapperService;
 
-        public ProductService(IProductRepository repository, IMapperService mapperService)
+        private readonly IPhotoService _photoService;
+
+        public ProductService(IProductRepository repository, IMapperService mapperService, IPhotoService photoService)
         {
             _repository = repository;
             _mapperService = mapperService;
+            _photoService = photoService;
         }
-        public async Task<string> AddProduct(ProductDTO productDTO)
+        public async Task<string> AddProduct(ProductDTO productDTO, IFormFile photo)
         {
+            if (photo.Length > 0)
+            {
+                var imageUploadResult = await _photoService.AddPhoto(photo);
+                productDTO.Image = imageUploadResult.Url.ToString();
+            }
             var mappedProduct = _mapperService.ProductDTOToProduct(productDTO); 
 
             if (await _repository.GetProductByNameAndType(mappedProduct.Name, mappedProduct.Type) != null)
@@ -52,7 +60,7 @@ namespace taller1WebMovil.Src.Services.Implements
             return Task.FromResult(product);
         }
 
-        public async Task<ProductDTO?> GetProductByNameAndType(ProductDTO productDTO)
+        public async Task<ProductDTO?> GetProductByNameAndType(UpdateProductDTO productDTO)
         {
             var product = await _repository.GetProductByNameAndType(productDTO.Name, productDTO.Type);
             return _mapperService.ProductToProductDTO(product);
@@ -64,16 +72,21 @@ namespace taller1WebMovil.Src.Services.Implements
             return Task.FromResult(products);
         }
 
-        public async Task<UpdateProductDTO> UpdateProduct(int id, UpdateProductDTO productDTO)
+        public async Task<UpdateProductDTO> UpdateProduct(int id, UpdateProductDTO productDTO, IFormFile? photo)
         {
-            {
+            {   
+                if(photo != null){
+                    var result = await _photoService.AddPhoto(photo);
+                    if (result != null){
+                        productDTO.Image = result.Url.ToString();
+                    }
+                }
                 var product = await _repository.GetProductById(id);
                 if (product == null)
                 {
                     throw new Exception("Producto no encontrado");
                 }
-                var productDTOToCompare = _mapperService.UpdateProductDTOToProduct(productDTO);
-                await GetProductByNameAndType(productDTOToCompare);
+                await GetProductByNameAndType(productDTO);
                 if(!string.IsNullOrEmpty(productDTO.Name))
                 {
                     product.Name = productDTO.Name ?? product.Name;
@@ -87,17 +100,18 @@ namespace taller1WebMovil.Src.Services.Implements
                     }
                     product.Type = productDTO.Type ?? product.Type;
                 }
-                if(productDTO.Price.HasValue)
+                if (productDTO.Price.HasValue)
                 {
                     product.Price = productDTO.Price.Value;
                 }
-                if(productDTO.Stock.HasValue)
+                if (productDTO.Stock.HasValue)
                 {
                     product.Stock = productDTO.Stock.Value;
                 }
-                if(!string.IsNullOrEmpty(productDTO.Image))
+                if (!string.IsNullOrEmpty(productDTO.Image))
                 {
-                    product.Image = productDTO.Image ?? product.Image;
+                    var imageUploadResult = await _photoService.AddPhoto(photo);
+                    product.Image = imageUploadResult.Url.ToString() ?? product.Image;
                 }
                 await _repository.SaveChanges();
                 var updateProductDTO = _mapperService.ProductToUpdateProductDTO(product);
