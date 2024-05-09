@@ -8,6 +8,9 @@ namespace taller1WebMovil.Src.Services.Interfaces
       Task GetProductPurchaseById(int id);   
 
       Task<IEnumerable<Purchase>> GetPurchases();
+
       Task<Purchase> MakePurchase(int id, int quantity, int userId);
+
+      Task<IEnumerable<PurchaseDTO>> SearchPurchase(string searchString);
     }
 }
