@@ -21,15 +21,25 @@ namespace taller1WebMovil.Src.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("all")]
-        public ActionResult<ProductDTO> GetProducts(){
-            var products = _productService.GetProducts().Result;
-            var productDTOs = products.Select(p => _mapper.ProductToProductDTO(p)).ToList();
-            if(productDTOs == null){
-                return NotFound("No se encontraron productos");
+        [HttpPost("search/{searchString}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchString)
+        {
+            try
+            {
+                var products = await _productService.SearchProducts(searchString);
+                if (!products.Any())
+                {
+                    return NotFound("No se encontraron productos que coincidan con la búsqueda.");
+                }
+                return Ok(products);
             }
-            return Ok(productDTOs);
-        } 
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
 
         [HttpPost("add")]
         public async Task<ActionResult<string>> AddProduct(ProductDTO productDTO){

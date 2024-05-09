@@ -152,6 +152,14 @@ namespace taller1WebMovil.Src.Services.Implements
                     return false;
                 }
 
+                var result2 = BCrypt.Net.BCrypt.Verify(editPasswordDTO.NewPassword, user.Password);
+
+                if (result2)
+                {
+                    Console.WriteLine($"Contraseña igual a la anterior, no aceptada");
+                    return false;
+                }
+
                 var salt = BCrypt.Net.BCrypt.GenerateSalt(12);
                 user.Password = BCrypt.Net.BCrypt.HashPassword(editPasswordDTO.NewPassword, salt);
                 await _repository.SaveChanges();
