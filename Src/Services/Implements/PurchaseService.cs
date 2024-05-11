@@ -29,12 +29,6 @@ namespace taller1WebMovil.Src.Services.Implements
             return;
         }
 
-        public Task<IEnumerable<Purchase>> GetPurchases()
-        {
-            var purchase = _purchaseRepository.GetPurchases().Result;
-            return Task.FromResult<IEnumerable<Purchase>>(purchase);
-        }
-
         public Task<Purchase> MakePurchase(int id, int quantity, int userId)
         {
             var product = _productService.GetProductById(id).Result;
@@ -68,7 +62,7 @@ namespace taller1WebMovil.Src.Services.Implements
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                // Realizar búsqueda por nombre y tipo
+                
                 purchase = purchase.Where(p =>
                     p.ProductName.Contains(searchString, System.StringComparison.OrdinalIgnoreCase) ||
                     p.ProductType.Contains(searchString, System.StringComparison.OrdinalIgnoreCase) ||
@@ -77,8 +71,26 @@ namespace taller1WebMovil.Src.Services.Implements
                 );
             }
 
-            return purchase.Select(p => _mapperService.PurchaseToPurchaseDTO(p));
-            
+            return purchase.Select(p => _mapperService.PurchaseToPurchaseDTO(p)); 
         }
+
+        public async Task<IEnumerable<PurchaseDTO>> SearchTicket(string searchString)
+        {
+            
+            var purchase = await _purchaseRepository.GetPurchases();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                purchase = purchase.Where(p =>
+                    p.UserId.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase) // Convertir UserId a cadena para buscar
+                );
+            }
+
+            purchase = purchase.OrderByDescending(p => p.Date);
+
+            return purchase.Select(p => _mapperService.PurchaseToPurchaseDTO(p)); 
+        }
+
+
     }
 }
