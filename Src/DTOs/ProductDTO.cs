@@ -6,6 +6,7 @@ namespace taller1WebMovil.Src.DTOs
 {
     public class ProductDTO
     {
+        public int Id { get; set; } //Primary Key
         [Required(ErrorMessage = "El campo nombre es requerido")] //nombre requerido
         [MinLength(10, ErrorMessage = "El nombre debe tener al menos 10 caracteres")] //nombre minimo de 10 caracteres
         [MaxLength(64, ErrorMessage = "El nombre debe tener como máximo 64 caracteres")] //nombre maximo de 64 caracteres

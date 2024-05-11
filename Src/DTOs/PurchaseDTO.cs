@@ -10,6 +10,8 @@ namespace taller1WebMovil.Src.DTOs
 
         public string ProductType { get; set; } = string.Empty;
 
+        public int UserId { get; set; }
+
         public int UnitPrice { get; set; }
 
         public int Quantity { get; set; }

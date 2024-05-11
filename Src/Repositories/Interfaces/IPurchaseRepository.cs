@@ -9,5 +9,7 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
         Task<IEnumerable<Purchase>> GetPurchases();
 
         Task MakePurchase(Purchase purchase);
+
+        Task <IEnumerable<Purchase>> ByUserId(int id);
     }
 }

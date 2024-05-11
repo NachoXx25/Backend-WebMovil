@@ -21,14 +21,22 @@ namespace taller1WebMovil.Src.Controllers
             _purchaseService = purchaseService;
         }
         [Authorize(Roles = "User")]
-        [HttpGet ("all")]
-        public ActionResult<ProductDTO> GetAvailableProducts(){
-            var products = _productService.GetAvailableProducts().Result;
-            var productDTOs = products.Select(p => _mapper.ProductToProductDTO(p)).ToList();
-            if(productDTOs == null){
-                return NotFound("No se encontraron productos");
+        [HttpGet("searchProducts/{searchString}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchString)
+        {
+            try
+            {
+                var products = await _productService.SearchProducts(searchString);
+                if (!products.Any())
+                {
+                    return NotFound("No se encontraron productos que coincidan con la búsqueda.");
+                }
+                return Ok(products);
             }
-            return Ok(productDTOs);
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
         [Authorize(Roles = "User")]
         [HttpPost("{id}/{quantity}/buy")]
@@ -55,20 +63,30 @@ namespace taller1WebMovil.Src.Controllers
                     return BadRequest("No hay suficiente stock");
                 }
                 var purchase = _purchaseService.MakePurchase(id, quantity, IdUser).Result;
+                
                 return Ok(_mapper.PurchaseToPurchaseDTO(purchase));
             }catch(Exception e){
                 return BadRequest(e.Message);
             }
         }
+        
         [Authorize(Roles = "Admin")]
-        [HttpGet("sales")]
-        public ActionResult<PurchaseDTO> GetPurchases(){
-            var purchase = _purchaseService.GetPurchases().Result;
-            var purchaseDTOs = purchase.Select(p => _mapper.PurchaseToPurchaseDTO(p)).ToList();
-            if(purchaseDTOs == null){
-                return NotFound("No se encontraron compras");
+        [HttpGet("searchPurchase/{searchString}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchPurchase(string searchString)
+        {
+            try
+            {
+                var products = await _purchaseService.SearchPurchase(searchString);
+                if (!products.Any())
+                {
+                    return NotFound("No se encontraron productos que coincidan con la búsqueda.");
+                }
+                return Ok(products);
             }
-            return Ok(purchaseDTOs);
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
