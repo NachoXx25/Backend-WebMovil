@@ -3,6 +3,7 @@ using taller1WebMovil.Src.Data;
 using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 using taller1WebMovil.Src.Repositories.Interfaces;
+using taller1WebMovil.Src.Services.Implements;
 
 namespace taller1WebMovil.Src.Repositories.Implements
 {
@@ -65,6 +66,7 @@ namespace taller1WebMovil.Src.Repositories.Implements
             var products = await _context.Products.ToListAsync(); //Se obtienen todos los productos
             return products;
         }
+        
 
         public Task SaveChanges()
         {

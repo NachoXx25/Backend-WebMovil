@@ -15,5 +15,7 @@ namespace taller1WebMovil.Src.Services.Interfaces
         Task<bool> EditUser(int userId, UserProfileEditDTO userProfileEditDTO);
 
         Task<bool> EditPassword(int userId, EditPasswordDTO editPasswordDTO);
+
+        Task<IEnumerable<UserDTO>> SearchUsers(string searchString);
     }
 }

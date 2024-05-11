@@ -132,5 +132,22 @@ namespace taller1WebMovil.Src.Services.Implements
             }
             return;
         }
+
+        public async Task<IEnumerable<ProductDTO>> SearchProducts(string searchString)
+        {
+            var products = await _repository.GetProducts();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Realizar búsqueda por nombre y tipo
+                products = products.Where(p =>
+                    p.Name.Contains(searchString, System.StringComparison.OrdinalIgnoreCase) ||
+                    p.Type.Contains(searchString, System.StringComparison.OrdinalIgnoreCase)
+                );
+            }
+
+            return products.Select(p => _mapperService.ProductToProductDTO(p));
+        }
+
     }
 }

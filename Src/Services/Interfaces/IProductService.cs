@@ -20,5 +20,7 @@ namespace taller1WebMovil.Src.Services.Interfaces
         Task VerifyNameAndType(ProductDTO productDTO); //Se verifica el nombre del producto
  
         Task DeleteProduct(int id); //Se elimina un producto
+
+        Task<IEnumerable<ProductDTO>> SearchProducts(string searchString);
     }
 }

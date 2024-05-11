@@ -14,6 +14,14 @@ namespace taller1WebMovil.Src.Repositories.Implements
             _context = context;
         }
 
+        public async Task<IEnumerable<Purchase>> ByUserId(int id)
+        {
+            var purchases = await _context.Purchases
+                                        .Where(p => p.UserId == id)
+                                        .ToListAsync();
+            return purchases;
+        }
+
         public async Task<bool> GetProductPurchaseById(int id)
         {
             var Product = await _context.Purchases.FirstOrDefaultAsync(p => p.Id == id);

@@ -20,26 +20,22 @@ namespace taller1WebMovil.Src.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public ActionResult<IEnumerable<UserDTO>> GetAllUsers() //metodo para obtener todos los usuarios
-        {
-            var users = _service.GetNonAdminUsers().Result; //se obtienen todos los usuarios
-            var result = users.Select(user => _mapper.UserToUserDTO(user)).ToList(); //se mapean los usuarios
-            if (result.Count == 0) //si no hay usuarios
-            {
-                return NotFound("No se encontraron usuarios registrados"); //se retorna not found
-            }
-            return Ok(result); //se retornan los usuarios
-        }
 
-        [HttpPut("{rut}/disable")]
+        [HttpGet("search/{searchString}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult<UserDTO> DisableAccount(string rut){
-            try{
-                var user = _service.DisableAccount(rut).Result;
-                return Ok(_mapper.UserToUserDTO(user));
-            }catch(Exception e){
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchString)
+        {
+            try
+            {
+                var users = await _service.SearchUsers(searchString);
+                if (!users.Any())
+                {
+                    return NotFound("No se encontraron usuarios que coincidan con la búsqueda.");
+                }
+                return Ok(users);
+            }
+            catch (Exception e)
+            {
                 return BadRequest(e.Message);
             }
         }
