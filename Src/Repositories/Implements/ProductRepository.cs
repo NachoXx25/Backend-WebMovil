@@ -51,7 +51,7 @@ namespace taller1WebMovil.Src.Repositories.Implements
             
         }
 
-        public async Task<Product> GetProductByNameAndType(string name, string type)
+        public async Task<Product?> GetProductByNameAndType(string name, string type)
         {
             var product = await _context.Products.Where(p => p.Name == name & p.Type == type).FirstOrDefaultAsync(); //Se obtiene el producto por su nombre y tipo
             if(product != null)
