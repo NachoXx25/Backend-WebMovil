@@ -181,10 +181,10 @@ namespace taller1WebMovil.Src.Services.Implements
             {
                 // Realizar búsqueda por nombre y rut
                 users = users.Where(p =>
-                    p.Name.Contains(searchString, System.StringComparison.OrdinalIgnoreCase) ||
-                    p.Rut.Contains(searchString, System.StringComparison.OrdinalIgnoreCase) ||
-                    p.Email.Contains(searchString, System.StringComparison.OrdinalIgnoreCase)   ||
-                    p.Gender.Contains(searchString, System.StringComparison.OrdinalIgnoreCase)
+                    p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Rut.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase)
                 );
             }
 
