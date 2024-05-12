@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using taller1WebMovil.Src.Data;
+using taller1WebMovil.Src.Helpers;
 using taller1WebMovil.Src.Repositories.Implements;
 using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Implements;
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly); 
 builder.Services.AddDbContext<DataContext>(option => option.UseSqlite("Data Source=Data.db"));
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -25,6 +27,9 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<IPurchaseService, PurchaseService>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+
+
 
 
 builder.Services.AddAuthentication().AddJwtBearer(options =>
