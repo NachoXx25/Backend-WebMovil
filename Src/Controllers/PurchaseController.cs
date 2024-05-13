@@ -20,9 +20,10 @@ namespace taller1WebMovil.Src.Controllers
             _mapper = mapper;
             _purchaseService = purchaseService;
         }
+
         [Authorize(Roles = "User")]
-        [HttpGet("searchProducts/{searchString}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchString)
+        [HttpGet("searchProducts/{searchString?}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchString = null)
         {
             try
             {
@@ -38,6 +39,7 @@ namespace taller1WebMovil.Src.Controllers
                 return BadRequest(e.Message);
             }
         }
+
         [Authorize(Roles = "User")]
         [HttpPost("{id}/{quantity}/buy")]
         public ActionResult<PurchaseDTO> MakePurchase(int id, int quantity){
@@ -71,8 +73,8 @@ namespace taller1WebMovil.Src.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        [HttpGet("searchPurchase/{searchString}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchPurchase(string searchString)
+        [HttpGet("searchPurchase/{searchString?}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchPurchase(string searchString = null)
         {
             try
             {

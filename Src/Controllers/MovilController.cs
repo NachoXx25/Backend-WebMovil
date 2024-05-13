@@ -62,7 +62,6 @@ namespace taller1WebMovil.Src.Controllers
                 // Se accede a los claims de la token
                 var userId = jwtToken.Claims.First(claim => claim.Type == "Id").Value;
                 // Obtener las boletas del usuario utilizando el servicio de compras
-
                 var tickets = await _purchaseService.SearchTicket(userId);
                 return Ok(tickets);
             }
