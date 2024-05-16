@@ -144,6 +144,8 @@ namespace taller1WebMovil.Src.Services.Implements
                     p.Type.Contains(searchString, System.StringComparison.OrdinalIgnoreCase)
                 ); //Se filtran los productos por nombre o tipo
             }
+            
+            products = products.Where(p => p.Stock > 0); // Se filtran los productos con stock mayor o igual a 0
 
             return products.Select(p => _mapperService.ProductToProductDTO(p)); //Se mapean los productos a DTOs
         }

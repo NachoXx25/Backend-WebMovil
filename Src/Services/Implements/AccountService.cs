@@ -170,7 +170,7 @@ namespace taller1WebMovil.Src.Services.Implements
 
         public async Task<IEnumerable<UserDTO>> SearchUsers(string searchString)
         {
-            var users = await _repository.GetUsers(); // Obtener todos los usuarios
+            var users = await GetNonAdminUsers(); // Obtener todos los usuarios
             
             if (!string.IsNullOrEmpty(searchString)) // Si la cadena de búsqueda no es nula o vacía
             {
