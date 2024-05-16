@@ -1,0 +1,388 @@
+{
+	"info": {
+		"_postman_id": "13e69b8a-07da-46c5-a6f3-3f430e2b047a",
+		"name": "Taller IDWM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33696577"
+	},
+	"item": [
+		{
+			"name": "Authentication endpoints",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"Sylvester61@hotmail.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5289/api/Auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rut\": \"21179837-7\",\r\n  \"name\": \"Ignacio Valenzuel\",\r\n  \"birthDate\": \"2001-11-25\",\r\n  \"email\": \"ignacio.2001.@gmail.com\",\r\n  \"gender\": \"Masculino\",\r\n  \"password\": \"contrasenasecreta1\",\r\n  \"confirmPassword\": \"contrasenasecreta1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5289/api/Auth/register"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User endpoints",
+			"item": [
+				{
+					"name": "GetAllUsers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJFbWFpbCI6ImlnbmFjaW8ubWFuY2lsbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTU0Nzg0NzV9.TQwIThyCI0loairHNzG2ajfFKG2mm8myFsXNwQjVIYE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5289/api/User/search/"
+					},
+					"response": []
+				},
+				{
+					"name": "EditProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjIiLCJFbWFpbCI6IlN5bHZlc3RlcjYxQGhvdG1haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTcxNTUzOTAzNH0.CIQMHGBMr5lqRIswn6WJ94qTISvj9o1zwTuNpDAtAgQ"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Name\": \"Stallone sylvester\",\r\n  \"BirthDate\": \"2001-01-22\",\r\n  \"Gender\": \"Otro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5289/api/User/edit-profile"
+					},
+					"response": []
+				},
+				{
+					"name": "EditPasswordUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"password\": \"contrasenasecreta1\",\r\n  \"newPassword\": \"queloquemiloco13\",\r\n  \"confirmPassword\": \"queloquemiloco13\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5289/api/User/edit-password"
+					},
+					"response": []
+				},
+				{
+					"name": "DisableAccount",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJFbWFpbCI6ImlnbmFjaW8ubWFuY2lsbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTU0Nzg0NzV9.TQwIThyCI0loairHNzG2ajfFKG2mm8myFsXNwQjVIYE"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5289/api/User/35.528.503-0/disable"
+					},
+					"response": []
+				},
+				{
+					"name": "EnableAccount",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"url": "http://localhost:5289/api/User/35.528.503-0/enable"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product endpoints",
+			"item": [
+				{
+					"name": "GetProducts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjIiLCJFbWFpbCI6IlN5bHZlc3RlcjYxQGhvdG1haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTcxNTUzODY5M30.oR3uWmTZrI53q6a8lfDB9e6NlQAAfzBtrC46vy7YbNk"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "http://localhost:5289/api/Product/search/"
+					},
+					"response": []
+				},
+				{
+					"name": "AddProducts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJFbWFpbCI6ImlnbmFjaW8ubWFuY2lsbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTU0Nzg0NzV9.TQwIThyCI0loairHNzG2ajfFKG2mm8myFsXNwQjVIYE"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/D:/Imagenes/Screenshots/Captura de pantalla 2024-04-20 132432.png"
+								},
+								{
+									"key": "name",
+									"value": "Acer nitro 5",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "Tecnología",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1390000",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "10",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:5289/api/Product/add"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProduct",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJFbWFpbCI6ImlnbmFjaW8ubWFuY2lsbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTU0NjAxNzN9.HwcvLS-OEVLVP5ywMBy9c5-NwM0zrEArCmk8IJaCSpI"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Habitos atómicos",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "Libros",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price",
+									"value": "5000",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "stock",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/TheNachoXx/Downloads/descarga (1).jpeg",
+									"disabled": true
+								}
+							]
+						},
+						"url": "http://localhost:5289/api/product/6/update"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProduct",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJFbWFpbCI6ImlnbmFjaW8ubWFuY2lsbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTU0NjAxNzN9.HwcvLS-OEVLVP5ywMBy9c5-NwM0zrEArCmk8IJaCSpI"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:5289/api/Product/7/delete"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Purchase endpoints",
+			"item": [
+				{
+					"name": "ViewAvailableProducts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEyIiwiRW1haWwiOiJpZ25hY2lvLjIwMDIuQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU0ODM5NTV9.9E4EzqN0z_eBzytw5Mb6g-qL-dhveaVCltUxvXVxvzo"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5289/api/Purchase/searchProducts/"
+					},
+					"response": []
+				},
+				{
+					"name": "MakePurchase",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEyIiwiRW1haWwiOiJpZ25hY2lvLjIwMDIuQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU0NjAzMzJ9.rTLA2Z2neBcoh9e_N7lz_b0i2CttNjJpPQZCkdFCn50"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5289/api/Purchase/5/10/buy"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSales",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjEiLCJFbWFpbCI6ImlnbmFjaW8ubWFuY2lsbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MTU0ODQ5MDd9.qC-na8CeRm-P5mkRqdOdzoritV_sFMPCtVUMWLrFHww"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5289/api/Purchase/searchPurchase/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mobile Client",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"Sylvester61@hotmail.com\",\r\n    \"Password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5289/api/movil/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Tickets",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjIiLCJFbWFpbCI6IlN5bHZlc3RlcjYxQGhvdG1haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTcxNTQ1NDExOH0.uBxl-jXVe7Lgzsi021MwjHEDxPCTIBQ5Q_AeSDOdp50"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:5289/api/movil/tickets"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

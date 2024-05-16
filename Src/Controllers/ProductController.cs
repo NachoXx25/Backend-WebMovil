@@ -14,15 +14,17 @@ namespace taller1WebMovil.Src.Controllers
     {
         private readonly IProductService _productService;
         private readonly IMapperService _mapper;
+        private readonly IPhotoService _photoService;
 
-        public ProductController(IProductService productService, IMapperService mapper)
+        public ProductController(IProductService productService, IMapperService mapper, IPhotoService photoService)
         {
             _productService = productService;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
-        [HttpGet("search/{searchString}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchString)
+        [HttpGet("search/{searchString?}")] 
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> SearchProducts(string searchString = null)
         {
             try
             {
@@ -42,11 +44,11 @@ namespace taller1WebMovil.Src.Controllers
 
 
         [HttpPost("add")]
-        public async Task<ActionResult<string>> AddProduct(ProductDTO productDTO){
+        public async Task<ActionResult<string>> AddProduct([FromForm] ProductDTO productDTO, IFormFile photo){
             
-            try{
+            try{ 
                 await _productService.VerifyNameAndType(productDTO);
-                var product = await _productService.AddProduct(productDTO);
+                var product = await _productService.AddProduct(productDTO, photo);
                 if(product == null){
                     return NotFound("No se pudo agregar el producto");
                 }
@@ -57,22 +59,26 @@ namespace taller1WebMovil.Src.Controllers
         }
 
         [HttpPut("{id}/update")]
-        public async Task<ActionResult<UpdateProductDTO>> UptadeProduct(int id, [FromBody] UpdateProductDTO productDTO)
-            {
+        public async Task<ActionResult<UpdateProductDTO>> UptadeProduct(int id, [FromForm] UpdateProductDTO productDTO, IFormFile? photo){
                 try
                 {
                     if (!ModelState.IsValid)
                     {
                         return BadRequest(ModelState);
                     }
-                    var updateProductDTO = await _productService.UpdateProduct(id, productDTO);
-                    return Ok(updateProductDTO);
+                    if (productDTO == null)
+                    {
+                        throw new ArgumentNullException(nameof(productDTO));
+                    }
+                    var updateProductDTOs = await _productService.UpdateProduct(id, productDTO, photo);
+                    return Ok(updateProductDTOs);
                 }
                 catch(Exception e)
                 {
                     return BadRequest(e.Message);
                 }
-            }
+        }
+
         [HttpDelete("{id}/delete")]
         public async Task<ActionResult<string>> DeleteProduct(int id){
             var product = await _productService.GetProductById(id);
