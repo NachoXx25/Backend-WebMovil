@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+# Archivos generados por la compilación
+obj/
+bin/
