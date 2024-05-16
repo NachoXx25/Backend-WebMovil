@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using System;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -14,10 +12,10 @@ namespace taller1WebMovil.Src.Controllers
     [Route("api/[controller]")]
     public class MovilController : ControllerBase
     {
-        private readonly IAuthService _authService;
-        private readonly IUserRepository _userRepository;
+        private readonly IAuthService _authService;  //se inyecta el servicio de autenticación
+        private readonly IUserRepository _userRepository; //se inyecta el repositorio de usuarios
 
-        private readonly IPurchaseService _purchaseService;
+        private readonly IPurchaseService _purchaseService;//se inyecta el servicio de compras
 
         public MovilController(IUserRepository userRepository, IAuthService authService, IPurchaseService purchaseService)
         {
@@ -29,25 +27,25 @@ namespace taller1WebMovil.Src.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<string>> LoginUser(LoginUserDTO loginUserDTO)
         {
-            var userClient = await _userRepository.GetUserByEmail(loginUserDTO.Email);
+            var userClient = await _userRepository.GetUserByEmail(loginUserDTO.Email); //se obtiene el usuario por email
 
             if (userClient != null)
             {
-                if (userClient.Role != null && userClient.Role.Name != "User")
+                if (userClient.Role != null && userClient.Role.Name != "User") //Verificar si el usuario es un cliente
                 {
                     return BadRequest("Solo se permite el uso a clientes");
                 }
 
-                var result = await _authService.LoginUser(loginUserDTO);
+                var result = await _authService.LoginUser(loginUserDTO); //se llama al metodo de login
 
                 if (result != null)
                 {
                     return Ok(result);
                 }
 
-                return BadRequest("Credenciales inválidas.");
+                return BadRequest("Credenciales inválidas."); //si no se logra loguear, se retorna un mensaje de credenciales inválidas
             }
-            return BadRequest("Usuario no encontrado.");
+            return BadRequest("Usuario no encontrado."); //si no se logra encontrar el usuario, se retorna un mensaje de usuario no encontrado
         }
 
         [Authorize(Roles = "User")]
@@ -62,7 +60,7 @@ namespace taller1WebMovil.Src.Controllers
                 // Se accede a los claims de la token
                 var userId = jwtToken.Claims.First(claim => claim.Type == "Id").Value;
                 // Obtener las boletas del usuario utilizando el servicio de compras
-                var tickets = await _purchaseService.SearchTicket(userId);
+                var tickets = await _purchaseService.SearchTicket(userId); //se llama al metodo de buscar boletas
                 return Ok(tickets);
             }
             catch (Exception e)

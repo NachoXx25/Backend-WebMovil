@@ -7,7 +7,7 @@ namespace taller1WebMovil.Src.DTOs
     {
         [MinLength(10, ErrorMessage = "El nombre debe tener al menos 10 caracteres")] //nombre minimo de 10 caracteres
         [MaxLength(64, ErrorMessage = "El nombre debe tener como máximo 64 caracteres")] //nombre maximo de 64 caracteres
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ0-9\s]*$", ErrorMessage = "El nombre debe estar en alfabeto español y puede contener números")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ0-9\s]*$", ErrorMessage = "El nombre debe estar en alfabeto español y puede contener números")] //nombre solo en alfabeto español y puede contener números
 
         public string? Name { get; set; } 
 

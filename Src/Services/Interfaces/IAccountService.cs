@@ -12,10 +12,10 @@ namespace taller1WebMovil.Src.Services.Interfaces
 
         Task<User> EnableAccount(string rut); //Se habilita una cuenta
 
-        Task<bool> EditUser(int userId, UserProfileEditDTO userProfileEditDTO);
+        Task<bool> EditUser(int userId, UserProfileEditDTO userProfileEditDTO); //Se edita un usuario
 
-        Task<bool> EditPassword(int userId, EditPasswordDTO editPasswordDTO);
+        Task<bool> EditPassword(int userId, EditPasswordDTO editPasswordDTO); //Se edita la contraseña de un usuario
 
-        Task<IEnumerable<UserDTO>> SearchUsers(string searchString);
+        Task<IEnumerable<UserDTO>> SearchUsers(string searchString); //Se buscan usuarios
     }
 }

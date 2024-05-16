@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using System;
 
 namespace taller1WebMovil.Src.Controllers
 {
@@ -12,9 +10,8 @@ namespace taller1WebMovil.Src.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
-        private readonly IUserRepository _userRepository;
-
+        private readonly IAuthService _authService; //se inyecta el servicio de autenticación
+        private readonly IUserRepository _userRepository; //se inyecta el repositorio de usuarios y el servicio de autenticación
         public AuthController(IUserRepository userRepository, IAuthService authService)
         {
             _authService = authService;
@@ -52,7 +49,8 @@ namespace taller1WebMovil.Src.Controllers
                 return BadRequest(e.Message); //si no se logra registrar, se retorna un mensaje de error, los de errores de servidor
             }
         }
-
+        //Método que se evaluará en componente de Angular
+        /*
         [HttpGet("logout")]
         public async Task<ActionResult<string>> Logout()
         {
@@ -60,5 +58,6 @@ namespace taller1WebMovil.Src.Controllers
             Response.Cookies.Delete("token");
             return Ok("Sesión cerrada exitosamente.");
         }
+        */
     }
 }

@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
-using taller1WebMovil.Src.Repositories.Implements;
 using taller1WebMovil.Src.Repositories.Interfaces;
 using taller1WebMovil.Src.Services.Interfaces;
 
@@ -114,23 +113,23 @@ namespace taller1WebMovil.Src.Services.Implements
         }
         public static string FormatRut(string rut)
         {
-            int cont = 0;
-            string format;
+            int cont = 0; //Se crea un contador
+            string format; //Se crea un string format
 
-            rut = rut.Replace(".", "");
-            rut = rut.Replace("-", "");
-            format = "-" + rut.Substring(rut.Length - 1);
+            rut = rut.Replace(".", ""); //Se reemplaza el punto por un espacio vacío
+            rut = rut.Replace("-", ""); // Se reemplaza el guión por un espacio vacío
+            format = "-" + rut.Substring(rut.Length - 1); //Se obtiene el último dígito del rut
             for (int i = rut.Length - 2; i >= 0; i--)
             {
-                format = rut.Substring(i, 1) + format;
+                format = rut.Substring(i, 1) + format; //Se obtiene el dígito y se agrega al formato
                 cont++;
                 if (cont == 3 && i != 0)
                 {
-                    format = "." + format;
-                    cont = 0;
+                    format = "." + format; //Se agrega un punto al formato
+                    cont = 0; //Se reinicia el contador
                 }
             }
-            return format;
+            return format; //Se retorna el rut formateado
         }
     }
     

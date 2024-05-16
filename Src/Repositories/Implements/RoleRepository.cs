@@ -7,7 +7,7 @@ namespace taller1WebMovil.Src.Repositories.Implements
 {
     public class RoleRepository : IRoleRepository
     {
-        private readonly DataContext _context; //Inyección de dependencia
+        private readonly DataContext _context; //Se crea un atributo de tipo DataContext
 
         public RoleRepository(DataContext dataContext)
         {

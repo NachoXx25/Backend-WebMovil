@@ -1,15 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using taller1WebMovil.Src.Data;
-using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 using taller1WebMovil.Src.Repositories.Interfaces;
-using taller1WebMovil.Src.Services.Implements;
 
 namespace taller1WebMovil.Src.Repositories.Implements
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly DataContext _context; //Inyección de dependencia
+        private readonly DataContext _context; //Se crea un atributo de tipo DataContext
 
         public ProductRepository(DataContext dataContext)
         {
@@ -25,18 +23,18 @@ namespace taller1WebMovil.Src.Repositories.Implements
         public async Task<IEnumerable<Product>> AvailableProducts()
         {
             var products = await _context.Products.Where(p => p.Stock > 0).ToListAsync(); //Se obtienen los productos disponibles
-            return products;
+            return products; //Se retornan los productos
         }
 
         public async Task<bool> DeleteProduct(Product product)
         {
-            if(product == null)
+            if(product == null) //Si el producto no existe
             {
-                return false;
+                return false; //Se retorna falso
             }
             _context.Products.Remove(product); //Se elimina el producto
-            await _context.SaveChangesAsync();
-            return true;  
+            await _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
+            return true;  //Se retorna verdadero
         }
 
 

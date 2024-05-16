@@ -34,13 +34,11 @@ namespace taller1WebMovil.Src.Validations
                 return new ValidationResult("Formato de fecha no válido.");
             }
 
-            // Normalizar la fecha al formato "yyyy-MM-dd"
-            string normalizedDate = parsedDate.ToString("yyyy-MM-dd");
+            string normalizedDate = parsedDate.ToString("yyyy-MM-dd"); // Normalizar la fecha
             
-            // Asignar la fecha normalizada de vuelta al valor
-            validationContext.ObjectType.GetProperty(validationContext.MemberName)?.SetValue(validationContext.ObjectInstance, normalizedDate);
+            validationContext.ObjectType.GetProperty(validationContext.MemberName)?.SetValue(validationContext.ObjectInstance, normalizedDate); // Normalizar la fecha
 
-            return ValidationResult.Success;
+            return ValidationResult.Success; // Validación exitosa
         }
     }
 }

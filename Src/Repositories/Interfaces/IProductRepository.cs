@@ -1,4 +1,3 @@
-using taller1WebMovil.Src.DTOs;
 using taller1WebMovil.Src.Models;
 
 namespace taller1WebMovil.Src.Repositories.Interfaces
@@ -17,6 +16,6 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
         Task<IEnumerable<Product>> AvailableProducts(); //Se obtienen los productos disponibles
 
         Task<Product?> GetProductByNameAndType(string name, string type); //Se obtiene un producto mediante su nombre y tipo
-        public Task SaveChanges();
+        public Task SaveChanges(); //Se guardan los cambios en la base de datos
     }
 }

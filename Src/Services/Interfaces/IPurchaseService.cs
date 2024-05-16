@@ -5,12 +5,12 @@ namespace taller1WebMovil.Src.Services.Interfaces
 {
     public interface IPurchaseService
     {
-      Task GetProductPurchaseById(int id);   
+      Task GetProductPurchaseById(int id); //Se obtiene una compra por id
 
-      Task<Purchase> MakePurchase(int id, int quantity, int userId);
+      Task<Purchase> MakePurchase(int id, int quantity, int userId); //Se realiza una compra
 
-      Task<IEnumerable<PurchaseDTO>> SearchPurchase(string searchString);
+      Task<IEnumerable<PurchaseDTO>> SearchPurchase(string searchString); //Se buscan compras
 
-      Task<IEnumerable<PurchaseDTO>> SearchTicket(string searchString);
+      Task<IEnumerable<PurchaseDTO>> SearchTicket(string searchString); //Se buscan tickets
     }
 }

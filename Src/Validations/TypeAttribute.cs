@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace taller1WebMovil.Src.Validations
 {
