@@ -42,7 +42,15 @@ This system requires certain credentials to run properly. These credentials are 
 You can test the API using the Postman collection file included in this repository: Taller IDWM.postman_collection.json.
 
 
-## Authors
+## Authors information
+- Name: Ignacio Alfonso Valenzuela Godoy
+- Email: ignacio.valenzuela01@alumnos.ucn.cl 
+- Rut: 21.179.837-8
 
+- Name: Alexander Gubier Oscar Tapia Olmedo
+- Email: Alexander.tapia@alumnos.ucn.cl
+- Rut: 20.544.596-k
+
+## Authors Github
 - [@NachoXx25](https://github.com/NachoXx25)
 - [@Katapentakill](https://github.com/Katapentakill)
