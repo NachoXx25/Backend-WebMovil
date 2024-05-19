@@ -34,6 +34,10 @@ Once the above is installed, clone the repository with the command:
 ```bash
     dotnet run
 ```
+
+# Important
+This system requires certain credentials to run properly. These credentials are not included in the GitHub repository due to confidentiality reasons. If you are a stakeholder and need these credentials to run the program, please contact the repository owner or maintainers.
+
 # Usage
 You can test the API using the Postman collection file included in this repository: Taller IDWM.postman_collection.json.
 
