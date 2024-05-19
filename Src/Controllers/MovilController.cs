@@ -61,6 +61,10 @@ namespace taller1WebMovil.Src.Controllers
                 var userId = jwtToken.Claims.First(claim => claim.Type == "Id").Value;
                 // Obtener las boletas del usuario utilizando el servicio de compras
                 var tickets = await _purchaseService.SearchTicket(userId); //se llama al metodo de buscar boletas
+                if (!tickets.Any())
+                {
+                    return NotFound("No se encontraron boletas."); //si no se logra encontrar, se retorna un mensaje de no encontrado
+                }
                 return Ok(tickets);
             }
             catch (Exception e)

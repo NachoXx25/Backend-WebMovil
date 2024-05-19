@@ -15,6 +15,10 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
 
         Task<IEnumerable<Product>> AvailableProducts(); //Se obtienen los productos disponibles
 
+        Task<IEnumerable<Product>> SearchProducts(string search); //Obtener todos los productos filtrandolos por caracteristicas especificas, stock > 0
+
+        Task<IEnumerable<Product>> AdminSearchProducts(string search); //Obtener todos los productos filtrandolos por caracteristicas especificas
+
         Task<Product?> GetProductByNameAndType(string name, string type); //Se obtiene un producto mediante su nombre y tipo
         public Task SaveChanges(); //Se guardan los cambios en la base de datos
     }

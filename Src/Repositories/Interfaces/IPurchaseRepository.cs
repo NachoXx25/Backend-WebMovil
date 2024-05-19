@@ -10,6 +10,8 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
 
         Task MakePurchase(Purchase purchase); //Método para realizar una compra
 
-        Task <IEnumerable<Purchase>> ByUserId(int id); //Método para obtener las compras por el id del usuario
+        Task<IEnumerable<Purchase>> SearchPurchase(string search); //Obtener todas las compras filtrandolas por caracteristicas especificas
+
+        Task<IEnumerable<Purchase>> SearchTicket(string searchString); //Obtener todos los tickets filtrandolos por el id del usuario
     }
 }

@@ -48,12 +48,6 @@ namespace taller1WebMovil.Src.Services.Implements
             await _repository.SaveChanges(); //Se guardan los cambios en la base de datos
         }
 
-        public Task<IEnumerable<Product>> GetAvailableProducts()
-        {
-            var products = _repository.AvailableProducts().Result; //Se obtienen los productos disponibles
-            return Task.FromResult(products); //Se retorna la lista de productos
-        }
-
         public Task<Product?> GetProductById(int id)
         {
             var product = _repository.GetProductById(id).Result; //Se obtiene el producto por su id
@@ -64,12 +58,6 @@ namespace taller1WebMovil.Src.Services.Implements
         {
             var product = await _repository.GetProductByNameAndType(productDTO.Name, productDTO.Type); //Se obtiene el producto por su nombre y tipo
             return _mapperService.ProductToProductDTO(product); //Se retorna el producto mapeado
-        }
-
-        public Task<IEnumerable<Product>> GetProducts()
-        {
-            var products = _repository.GetProducts().Result; //Se obtienen todos los productos
-            return Task.FromResult(products); //Se retornan los productos
         }
 
         public async Task<UpdateProductDTO> UpdateProduct(int id, UpdateProductDTO productDTO, IFormFile? photo)
@@ -133,20 +121,15 @@ namespace taller1WebMovil.Src.Services.Implements
             return;
         }
 
-        public async Task<IEnumerable<ProductDTO>> SearchProducts(string searchString)
+        public async Task<IEnumerable<ProductDTO>> ClienteSearchProducts(string searchString)
         {
-            var products = await _repository.GetProducts(); //Se obtienen todos los productos
+            var products = await _repository.SearchProducts(searchString); // Obtener los productos filtrados
+            return products.Select(p => _mapperService.ProductToProductDTO(p)); // Mapear los productos a DTOs
+        }
 
-            if (!string.IsNullOrEmpty(searchString)) //Si la búsqueda no es nula o vacía
-            {
-                products = products.Where(p =>
-                    p.Name.Contains(searchString, System.StringComparison.OrdinalIgnoreCase) ||
-                    p.Type.Contains(searchString, System.StringComparison.OrdinalIgnoreCase)
-                ); //Se filtran los productos por nombre o tipo
-            }
-            
-            products = products.Where(p => p.Stock > 0); // Se filtran los productos con stock mayor o igual a 0
-
+        public async Task<IEnumerable<ProductDTO>> AdminSearchProducts(string searchString)
+        {
+            var products = await _repository.AdminSearchProducts(searchString); // Obtener los productos filtrados
             return products.Select(p => _mapperService.ProductToProductDTO(p)); //Se mapean los productos a DTOs
         }
 

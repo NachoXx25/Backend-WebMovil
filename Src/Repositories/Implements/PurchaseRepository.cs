@@ -14,14 +14,6 @@ namespace taller1WebMovil.Src.Repositories.Implements
             _context = context;
         }
 
-        public async Task<IEnumerable<Purchase>> ByUserId(int id)
-        {
-            var purchases = await _context.Purchases
-                                        .Where(p => p.UserId == id)
-                                        .ToListAsync(); //Se obtienen las compras por el id del usuario
-            return purchases; //Se retornan las compras
-        }
-
         public async Task<bool> GetProductPurchaseById(int id)
         {
             var Product = await _context.Purchases.FirstOrDefaultAsync(p => p.Id == id); //Se obtiene la compra por su id
@@ -47,6 +39,46 @@ namespace taller1WebMovil.Src.Repositories.Implements
             product.Stock -= purchase.Quantity; //Se resta la cantidad de productos comprados al stock
             _context.SaveChanges(); //Se guardan los cambios en la base de datos
             return Task.CompletedTask; //Se retorna una tarea completada
+        }
+
+        public async Task<IEnumerable<Purchase>> SearchPurchase(string searchString)
+        {
+            var purchases = await _context.Purchases.ToListAsync(); // Obtener todas las compras
+
+            if (!string.IsNullOrEmpty(searchString)) // Si la cadena de búsqueda no está vacía
+            {
+                purchases = purchases.Where(p =>
+                    p.Id.ToString().Equals(searchString) ||
+                    p.ProductName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.ProductType.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.UserId.ToString().Equals(searchString) ||
+                    p.Quantity.ToString().Equals(searchString) ||
+                    p.Total.ToString().Equals(searchString) ||
+                    p.UnitPrice.ToString().Equals(searchString) ||
+                    p.ProductId.ToString().Equals(searchString) ||
+                    p.Date.Day.ToString().Contains(searchString) ||
+                    p.Date.Month.ToString().Contains(searchString) ||
+                    p.Date.Year.ToString().Contains(searchString)
+                ).ToList(); // Filtrar las compras por Id, Producto nombre, Producto Tipo, user Id, cantidad, Total, precio unitario, Producto Id y fecha
+            }
+
+            return purchases; // Retornar las compras filtradas
+        }
+
+        public async Task<IEnumerable<Purchase>> SearchTicket(string searchString)
+        {
+            var purchases = await _context.Purchases.ToListAsync(); // Obtener todas las compras
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                purchases = purchases.Where(p => 
+                    p.UserId.ToString().Equals(searchString)
+                ).ToList(); // Filtrar las compras por id de usuario
+            }
+
+            purchases = purchases.OrderByDescending(p => p.Date).ToList(); // Ordenar las compras por fecha
+
+            return purchases; // Retornar las compras filtradas y ordenadas
         }
     }
 }

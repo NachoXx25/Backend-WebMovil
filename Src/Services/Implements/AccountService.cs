@@ -55,12 +55,6 @@ namespace taller1WebMovil.Src.Services.Implements
             return Task.FromResult(users); //Se retorna el usuario
         }
 
-        public Task<IEnumerable<User>> GetNonAdminUsers()
-        {
-            var users = _repository.GetUsers().Result; //Se obtienen todos los usuarios
-            var nonAdminUsers = users.Where(user => user.RoleId == 2).ToList(); //Se obtienen los usuarios que no son administradores
-            return Task.FromResult<IEnumerable<User>>(nonAdminUsers); //Se retornan los usuarios
-        }
         public static string FormatRut(string rut)
         {
             int cont = 0; //Se crea un contador
@@ -170,19 +164,8 @@ namespace taller1WebMovil.Src.Services.Implements
 
         public async Task<IEnumerable<UserDTO>> SearchUsers(string searchString)
         {
-            var users = await GetNonAdminUsers(); // Obtener todos los usuarios
-            
-            if (!string.IsNullOrEmpty(searchString)) // Si la cadena de búsqueda no es nula o vacía
-            {
-                users = users.Where(p =>
-                    p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.Rut.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase)
-                ); // Filtrar los usuarios por nombre, rut, email y género
-            }
-
-            return users.Select(p => _mapperService.UserToUserDTO(p)); // Mapear los usuarios a DTO
+            var users = await _repository.SearchUsers(searchString); // Obtener los usuarios filtrados
+            return users.Select(u => _mapperService.UserToUserDTO(u)); // Mapear los usuarios a DTO
         }
     }
 }

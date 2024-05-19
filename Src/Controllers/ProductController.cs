@@ -24,7 +24,7 @@ namespace taller1WebMovil.Src.Controllers
         {
             try
             {
-                var products = await _productService.SearchProducts(searchString); //se llama al metodo de buscar productos
+                var products = await _productService.AdminSearchProducts(searchString); //se llama al metodo de buscar productos
                 if (!products.Any())
                 {
                     return NotFound("No se encontraron productos que coincidan con la búsqueda."); //si no se logra encontrar, se retorna un mensaje de no encontrado

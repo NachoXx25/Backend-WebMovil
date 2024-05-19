@@ -20,5 +20,9 @@ namespace taller1WebMovil.Src.Repositories.Interfaces
         Task SaveChanges(); //Se guardan los cambios en la base de datos
 
         Task<User?> GetUserById(int id); //Se obtiene un usuario mediante su id
+
+        Task<IEnumerable<User>> SearchUsers(string search); //Buscar a todos los usuarios filtrandolos por caracteristicas especificas
+
+        Task<IEnumerable<User>> GetNonAdminUsers(); //Obtener todos los usuarios no admins
     }
 }

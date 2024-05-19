@@ -57,6 +57,35 @@ namespace taller1WebMovil.Src.Repositories.Implements
             return _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
         }
 
+        public async Task<IEnumerable<User>> GetNonAdminUsers()
+        {
+            var users = await _context.Users.ToListAsync(); // Obtener todos los usuarios
+            var nonAdminUsers = users.Where(user => user.RoleId == 2).ToList(); // Filtrar los usuarios que no son administradores
+            return nonAdminUsers; // Retornar los usuarios no administradores
+        }
+
+        public async Task<IEnumerable<User>> SearchUsers(string searchString)
+        {
+            var users = await GetNonAdminUsers(); // Obtener todos los usuarios no admins
+                    
+            if (!string.IsNullOrEmpty(searchString)) // Si la cadena de búsqueda no es nula o vacía
+            {
+                users = users.Where(p =>
+                    p.Id.ToString().Equals(searchString) ||
+                    p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Rut.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.BirthDate.Day.ToString().Contains(searchString) ||
+                    p.BirthDate.Month.ToString().Contains(searchString) ||
+                    p.BirthDate.Year.ToString().Contains(searchString) ||
+                    p.Active.ToString().Equals(searchString, StringComparison.OrdinalIgnoreCase)
+                ).ToList(); // Filtrar los usuarios por nombre, rut, email, género, fecha de nacimiento, activo, Id
+            }
+
+            return users; // Retornar los usuarios filtrados
+        }
+
         public async Task<bool> VerifyUserByEMail(string Email) //Método para verificar si un usuario existe por su email
         {
             var user = await _context.Users.Where(u => u.Email == Email)

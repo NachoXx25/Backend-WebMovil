@@ -20,6 +20,25 @@ namespace taller1WebMovil.Src.Repositories.Implements
             await _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
         }
 
+        public async Task<IEnumerable<Product>> AdminSearchProducts(string search)
+        {
+            var products = await GetProducts(); // Obtener todos los productos disponibles
+                    
+            if (!string.IsNullOrEmpty(search)) // Si la búsqueda no es nula o vacía
+            {
+                products = products.Where(p =>
+                    p.Id.ToString().Equals(search) ||
+                    p.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    p.Type.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    p.Stock.ToString().Equals(search) ||
+                    p.Price.ToString().Equals(search) ||
+                    p.Image.Contains(search, StringComparison.OrdinalIgnoreCase)
+                ).ToList(); // Filtrar los productos por id, nombre, tipo, stock, precio y imagen
+            }
+                    
+            return products; // Retornar los productos filtrados
+        }
+
         public async Task<IEnumerable<Product>> AvailableProducts()
         {
             var products = await _context.Products.Where(p => p.Stock > 0).ToListAsync(); //Se obtienen los productos disponibles
@@ -69,6 +88,25 @@ namespace taller1WebMovil.Src.Repositories.Implements
         public Task SaveChanges()
         {
             return _context.SaveChangesAsync(); //Se guardan los cambios en la base de datos
+        }
+
+        public async Task<IEnumerable<Product>> SearchProducts(string searchString)
+        {
+            var products = await AvailableProducts(); // Obtener todos los productos disponibles
+            
+            if (!string.IsNullOrEmpty(searchString)) // Si la búsqueda no es nula o vacía
+            {
+                products = products.Where(p =>
+                    p.Id.ToString().Equals(searchString) ||
+                    p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Type.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Stock.ToString().Equals(searchString) ||
+                    p.Price.ToString().Equals(searchString) ||
+                    p.Image.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                ).ToList(); // Filtrar los productos por id, nombre, tipo, stock, precio y imagen
+            }
+            
+            return products; // Retornar los productos filtrados
         }
     }
 }
