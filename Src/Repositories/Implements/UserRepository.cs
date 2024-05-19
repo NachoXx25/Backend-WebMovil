@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using taller1WebMovil.Src.Data;
 using taller1WebMovil.Src.Models;
@@ -67,23 +68,60 @@ namespace taller1WebMovil.Src.Repositories.Implements
         public async Task<IEnumerable<User>> SearchUsers(string searchString)
         {
             var users = await GetNonAdminUsers(); // Obtener todos los usuarios no admins
-                    
             if (!string.IsNullOrEmpty(searchString)) // Si la cadena de búsqueda no es nula o vacía
             {
-                users = users.Where(p =>
-                    p.Id.ToString().Equals(searchString) ||
-                    p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.Rut.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.BirthDate.Day.ToString().Contains(searchString) ||
-                    p.BirthDate.Month.ToString().Contains(searchString) ||
-                    p.BirthDate.Year.ToString().Contains(searchString) ||
-                    p.Active.ToString().Equals(searchString, StringComparison.OrdinalIgnoreCase)
-                ).ToList(); // Filtrar los usuarios por nombre, rut, email, género, fecha de nacimiento, activo, Id
+                // Convertir la cadena de búsqueda en un objeto DateTime si es una fecha válida
+                if (DateTime.TryParse(searchString, out DateTime searchDate))
+                {
+                    users = users.Where(p =>
+                        p.BirthDate.Date == searchDate.Date // Comparar solo la parte de la fecha, ignorando la hora
+                    ).ToList(); // Filtrar los usuarios por fecha de nacimiento
+                }
+                else
+                {
+                    // Si la cadena de búsqueda no es una fecha válida, tratarla como un RUT
+                    string formattedRut = FormatRut(searchString);
+                    users = users.Where(p =>
+                        p.Id.ToString().Equals(searchString) ||
+                        p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                        p.Rut.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                        p.Rut.Contains(formattedRut, StringComparison.OrdinalIgnoreCase) ||
+                        p.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                        p.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                        p.Active.ToString().Equals(searchString, StringComparison.OrdinalIgnoreCase)
+                    ).ToList(); // Filtrar los usuarios por nombre, rut, email, género, activo, Id
+                }
+            }
+            return users; // Retornar los usuarios filtrados
+        }
+
+        public static string FormatRut(string rut)
+        {
+            // Verificar si la cadena tiene el formato esperado de un RUT
+            if (!Regex.IsMatch(rut, @"^(\d{1,8})-?(\d|k|K)$"))
+            {
+                // Si no tiene el formato de un RUT, devolver la cadena original sin modificar
+                return rut;
             }
 
-            return users; // Retornar los usuarios filtrados
+            // Remover puntos y guiones del RUT
+            rut = rut.Replace(".", "").Replace("-", "");
+
+            int cont = 0; //Se crea un contador
+            string format = "-" + rut.Substring(rut.Length - 1); //Se obtiene el último dígito del rut
+
+            // Formatear el RUT
+            for (int i = rut.Length - 2; i >= 0; i--)
+            {
+                format = rut.Substring(i, 1) + format; //Se obtiene el dígito y se agrega al formato
+                cont++; //Se aumenta el contador
+                if (cont == 3 && i != 0) //Si el contador es igual a 3 y no es el último dígito
+                {
+                    format = "." + format; //Se agrega un punto al formato
+                    cont = 0; //Se reinicia el contador
+                }
+            }
+            return format; //Se retorna el rut formateado
         }
 
         public async Task<bool> VerifyUserByEMail(string Email) //Método para verificar si un usuario existe por su email

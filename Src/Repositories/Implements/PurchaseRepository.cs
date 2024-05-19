@@ -47,19 +47,27 @@ namespace taller1WebMovil.Src.Repositories.Implements
 
             if (!string.IsNullOrEmpty(searchString)) // Si la cadena de búsqueda no está vacía
             {
-                purchases = purchases.Where(p =>
-                    p.Id.ToString().Equals(searchString) ||
-                    p.ProductName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.ProductType.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    p.UserId.ToString().Equals(searchString) ||
-                    p.Quantity.ToString().Equals(searchString) ||
-                    p.Total.ToString().Equals(searchString) ||
-                    p.UnitPrice.ToString().Equals(searchString) ||
-                    p.ProductId.ToString().Equals(searchString) ||
-                    p.Date.Day.ToString().Contains(searchString) ||
-                    p.Date.Month.ToString().Contains(searchString) ||
-                    p.Date.Year.ToString().Contains(searchString)
-                ).ToList(); // Filtrar las compras por Id, Producto nombre, Producto Tipo, user Id, cantidad, Total, precio unitario, Producto Id y fecha
+                if (DateTime.TryParse(searchString, out DateTime searchDate))
+                {
+                    purchases = purchases.Where(p =>
+                        p.Date.Date == searchDate.Date // Comparar solo la parte de la fecha, ignorando la hora
+                    ).ToList(); // Filtrar los usuarios por fecha de nacimiento
+                }
+                else{
+                    purchases = purchases.Where(p =>
+                        p.Id.ToString().Equals(searchString) ||
+                        p.ProductName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                        p.ProductType.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                        p.UserId.ToString().Equals(searchString) ||
+                        p.Quantity.ToString().Equals(searchString) ||
+                        p.Total.ToString().Equals(searchString) ||
+                        p.UnitPrice.ToString().Equals(searchString) ||
+                        p.ProductId.ToString().Equals(searchString) ||
+                        p.Date.Day.ToString().Contains(searchString) ||
+                        p.Date.Month.ToString().Contains(searchString) ||
+                        p.Date.Year.ToString().Contains(searchString)
+                    ).ToList(); // Filtrar las compras por Id, Producto nombre, Producto Tipo, user Id, cantidad, Total, precio unitario, Producto Id y fecha
+                }
             }
 
             return purchases; // Retornar las compras filtradas
